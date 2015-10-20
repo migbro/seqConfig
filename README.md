@@ -1,0 +1,2 @@
+# seqConfig
+Sequencing configuration generator
