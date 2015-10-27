@@ -18,7 +18,7 @@ class RunType(models.Model):
 
 class SequencingMachine(models.Model):
     name = models.CharField(max_length=16, verbose_name='SequencingMachine Name')
-    description = models.TextField(verbose_name='RunType Description')
+    description = models.TextField(verbose_name='Sequencing Machine Description')
 
 
 class Config(models.Model):
