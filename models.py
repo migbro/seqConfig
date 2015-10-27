@@ -29,8 +29,10 @@ class Config(models.Model):
     barcode_cycles = models.IntegerField(verbose_name='Config Barcode Cycles')
     flowcell_id = models.CharField(max_length=64, verbose_name='Config Flowcell ID')
     machine = models.ForeignKey(SequencingMachine, verbose_name='Config Machine')
-    created_by = models.ForeignKey(User, verbose_name='Config User Created By', related_name='created_by_user')
-    approved_by = models.ForeignKey(User, verbose_name='Config User Approved By', related_name='approved_by_user')
+    created_by = models.ForeignKey(User, verbose_name='Config User Created By',
+                                   related_name='created_by_user')
+    approved_by = models.ForeignKey(User, verbose_name='Config User Approved By',
+                                    related_name='approved_by_user')
     approved_date = models.DateTimeField(verbose_name='Config Approved By Datetime')
 
 
