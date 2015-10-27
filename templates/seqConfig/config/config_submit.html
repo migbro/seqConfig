@@ -2,11 +2,17 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-sm-12">
-            <p>
-                Submit to me
-            </p>
-        </div>
+        <form action="/seqConfig/config/submit/" method="post">
+            {% csrf_token %}
+            {% for field in config_form %}
+                <div class="col-sm-2">
+                    {{ field.label_tag }}
+                </div>
+                <div class="col-sm-6">
+                    {{ field }}
+                </div>
+            {% endfor %}
+        </form>
     </div>
 </div>
 {% endblock %}
