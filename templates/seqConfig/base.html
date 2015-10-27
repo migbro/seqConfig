@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HGAC LIMS</title>
+
+    <link href="{% static 'css/bootstrap.flatly.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/seqConfig.css' %}" rel="stylesheet" />
+
+    <script src="{% static 'lib/jquery-2.1.4.min.js' %}"></script>
+</head>
+<body>
+{% block header %}
+    {% include 'seqConfig/headers/base_header.html' %}
+{% endblock header %}
+
+{% block content %}
+{% endblock content %}
+
+{% block footer %}
+    {% include 'seqConfig/headers/base_footer.html' %}
+{% endblock footer %}
+
+</body>
+</html>
