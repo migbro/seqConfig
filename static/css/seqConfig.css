@@ -1,0 +1,10 @@
+body{
+    font-family: 'Open Sans', sans-serif;
+}
+a{
+    color: #bf3604;
+}
+
+a:hover{
+    color: #8B2702;
+}
