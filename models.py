@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-import datetime
 
 
 class Barcode(models.Model):
@@ -12,33 +11,50 @@ class Barcode(models.Model):
 
 
 class RunType(models.Model):
-    name = models.CharField(max_length=8, verbose_name='RunType Name')
+    name = models.CharField(max_length=32, verbose_name='RunType Name')
     description = models.TextField(verbose_name='RunType Description')
+
+    def __str__(self):
+        return self.name
 
 
 class SequencingMachine(models.Model):
     name = models.CharField(max_length=16, verbose_name='SequencingMachine Name')
     description = models.TextField(verbose_name='Sequencing Machine Description')
 
+    def __str__(self):
+        return self.name
+
 
 class Config(models.Model):
     creation_date = models.DateTimeField(verbose_name='Config Creation Datetime')
     runtype = models.ForeignKey(RunType, verbose_name='Config RunType')
     read1_cycles = models.IntegerField(verbose_name='Config Read1 Cycles')
-    read2_cycles = models.IntegerField(verbose_name='Config Read2 Cycles')
-    barcode_cycles = models.IntegerField(verbose_name='Config Barcode Cycles')
-    flowcell_id = models.CharField(max_length=64, verbose_name='Config Flowcell ID')
+    read2_cycles = models.IntegerField(verbose_name='Config Read2 Cycles',
+                                       blank=True, null=True)
+    barcode_cycles = models.IntegerField(verbose_name='Config Barcode Cycles',
+                                         blank=True, null=True)
+    flowcell_id = models.CharField(max_length=64, verbose_name='Config Flowcell ID',
+                                   blank=True, null=True)
     machine = models.ForeignKey(SequencingMachine, verbose_name='Config Machine')
     created_by = models.ForeignKey(User, verbose_name='Config User Created By',
                                    related_name='created_by_user')
     approved_by = models.ForeignKey(User, verbose_name='Config User Approved By',
-                                    related_name='approved_by_user')
-    approved_date = models.DateTimeField(verbose_name='Config Approved By Datetime')
+                                    related_name='approved_by_user', blank=True,
+                                    null=True)
+    approved_date = models.DateTimeField(verbose_name='Config Approved By Datetime',
+                                         blank=True, null=True)
+
+    def __str__(self):
+        return '{}'.format(self.pk)
 
 
 class Lane(models.Model):
     number = models.SmallIntegerField(verbose_name='Lane Number')
     config = models.ForeignKey(Config, verbose_name='Lane Config')
+
+    def __str__(self):
+        return '{}'.format(self.number)
 
 
 class Library(models.Model):
@@ -48,6 +64,9 @@ class Library(models.Model):
     barcode = models.ForeignKey(Barcode, verbose_name='Library Barcode')
     cluster_station_concentration = models.FloatField(
         verbose_name='Library Cluster Station Concentration')
+
+    def __str__(self):
+        return self.bionimbus_id
 
     class Meta:
         verbose_name_plural = 'Libraries'
