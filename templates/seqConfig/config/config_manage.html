@@ -1,12 +1,41 @@
 {% extends 'seqConfig/base.html' %}
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col-sm-12">
-            <p>
-                This is the best.
-            </p>
+    <section class="seq-config-section">
+        <div class="row seq-text-center">
+            <h1>Config Manager</h1>
         </div>
-    </div>
+    </section>
+    <section class="seq-config-section">
+        <div class="row">
+            <button class="btn btn-primary btn-sm" style="margin-bottom:15px">
+                <span class="fa fa-plus"></span>&nbsp;&nbsp;Add Config
+            </button>
+        </div>
+        <div class="row">
+            <table>
+                <tr>
+                    <th class="col-xs-1">Config Number</th>
+                    <th class="col-xs-2">Creation Date</th>
+                    <th class="col-xs-2">Type</th>
+                    <th class="col-xs-1">Machine</th>
+                    <th class="col-xs-2">Flowcell ID</th>
+                    <th class="col-xs-2">Created By</th>
+                    <th class="col-xs-2">Approved By</th>
+                </tr>
+                {% for config in configs %}
+                    <tr>
+                        <td>{{ config.pk }}</td>
+                        <td>{{ config.creation_date }}</td>
+                        <td>{{ config.runtype.name }}</td>
+                        <td>{{ config.machine.name }}</td>
+                        <td>{{ config.flowcell_id }}</td>
+                        <td>{{ config.created_by.username }}</td>
+                        <td>{{ config.approved_by.username }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </section>
 </div>
 {% endblock %}

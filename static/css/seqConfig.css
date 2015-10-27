@@ -4,7 +4,17 @@ body{
 a{
     color: #bf3604;
 }
-
 a:hover{
     color: #8B2702;
+}
+a:visited{
+    color: #8B2702;
+}
+
+.seq-config-section{
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+.seq-text-center{
+    text-align: center;
 }
