@@ -5,5 +5,6 @@ from django.conf.urls.static import static
 import views
 
 urlpatterns = patterns('',
-                       url(r'^config/manage', views.config_manage, name='config manage')
+                       url(r'^config/manage', views.config_manage, name='config manage'),
+                       url(r'^config/submit', views.config_manage, name='config submit')
                        ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
