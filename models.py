@@ -43,8 +43,11 @@ class Lane(models.Model):
 
 class Library(models.Model):
     lane = models.ManyToManyField(Lane, verbose_name='Library Lane')
-    bionumbus_id = models.CharField(max_length=16, verbose_name='Library Bionimbus ID')
+    bionimbus_id = models.CharField(max_length=16, verbose_name='Library Bionimbus ID')
     submitter = models.ForeignKey(User, verbose_name='Library User Submitter')
     barcode = models.ForeignKey(Barcode, verbose_name='Library Barcode')
     cluster_station_concentration = models.FloatField(
         verbose_name='Library Cluster Station Concentration')
+
+    class Meta:
+        verbose_name_plural = 'Libraries'
