@@ -17,21 +17,26 @@
                 <tr>
                     <th class="col-xs-1">Config Number</th>
                     <th class="col-xs-2">Creation Date</th>
-                    <th class="col-xs-2">Type</th>
+                    <th class="col-xs-1">Type</th>
                     <th class="col-xs-1">Machine</th>
                     <th class="col-xs-2">Flowcell ID</th>
                     <th class="col-xs-2">Created By</th>
                     <th class="col-xs-2">Approved By</th>
+                    <th class="col-xs-1"></th>
                 </tr>
                 {% for config in configs %}
                     <tr>
                         <td>{{ config.pk }}</td>
                         <td>{{ config.creation_date }}</td>
-                        <td>{{ config.runtype.name }}</td>
+                        <td>{{ config.runtype.name }}: {{ config.read1_cycles }}, {{ config.barcode_cycles }}, {{ config.read2_cycles }}</td>
                         <td>{{ config.machine.name }}</td>
                         <td>{{ config.flowcell_id }}</td>
                         <td>{{ config.created_by.username }}</td>
                         <td>{{ config.approved_by.username }}</td>
+                        <td>
+                            <span class="fa fa-2x fa-pencil"></span>&nbsp;&nbsp;
+                            <span class="fa fa-2x fa-trash"></span>
+                        </td>
                     </tr>
                 {% endfor %}
             </table>
