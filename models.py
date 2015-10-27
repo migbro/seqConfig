@@ -3,13 +3,14 @@ from django.contrib.auth.models import User
 import datetime
 from django.contrib.auth.models import User
 
-# Create your models here.
+
 class Barcode(models.Model):
     name = models.CharField(max_length=64, verbose_name='Barcode name')
     sequence = models.CharField(max_length=64, verbose_name='Barcode sequence')
 
     def __str__(self):
         return '{}:{}'.format(self.name, self.sequence)
+
 
 class RunType(models.Model):
     name = models.CharField(max_length=8, verbose_name='RunType Name')
@@ -19,6 +20,21 @@ class RunType(models.Model):
 class SequencingMachine(models.Model):
     name = models.CharField(max_length=16, verbose_name='SequencingMachine Name')
     description = models.TextField(verbose_name='RunType Description')
+
+
+class Library(models.Model):
+    lane = models.ManyToManyField(Lane, verbose_name='Library Lane')
+    bionumbus_id = models.CharField(max_length=16, verbose_name='Library Bionimbus ID')
+    submitter = models.ForeignKey(User, verbose_name='Library User Submitter')
+    barcode = models.ForeignKey(Barcode, verbose_name='Library Barcode')
+    cluster_station_concentration = models.FloatField(
+        verbose_name='Library Cluster Station Concentration')
+
+
+class Lane(models.Model):
+    number = models.SmallIntegerField(verbose_name='Lane Number')
+    config = models.ForeignKey(Config, verbose_name='Lane Config')
+
 
 class Config(models.Model):
     creation_date = models.DateTimeField(verbose_name='Config Creation Datetime')
@@ -31,15 +47,3 @@ class Config(models.Model):
     created_by = models.ForeignKey(User, verbose_name='Config User Created By')
     approved_by = models.ForeignKey(User, verbose_name='Config User Approved By')
     approved_date = models.DateTimeField(verbose_name='Config Approved By Datetime')
-
-
-class Library(models.Model):
-    lane = models.ManyToManyField(Lane, verbose_name='Library Lane')
-    bionumbus_id = models.CharField(max_length=16, verbose_name='Library Bionimbus ID')
-    submitter = models.ForeignKey(User, verbose_name='Library User Submitter')
-    barcode = models.ForeignKey(Barcode, verbose_name='Library Barcode')
-    cluster_station_concentration = models.FloatField(verbose_name='Library Cluster Station Concentration')
-
-class Lane(models.Model):
-    number = models.SmallIntegerField(verbose_name='Lane Number')
-    config = models.ForeignKey(Config, verbose_name='Lane Config')
