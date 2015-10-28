@@ -19,14 +19,6 @@ class RunType(models.Model):
         return self.name
 
 
-class SequencingMachine(models.Model):
-    name = models.CharField(max_length=16, verbose_name='SequencingMachine Name')
-    description = models.TextField(verbose_name='Sequencing Machine Description')
-
-    def __str__(self):
-        return self.name
-
-
 class Config(models.Model):
     creation_date = models.DateTimeField(verbose_name='Config Creation Datetime',
                                          default=django.utils.timezone.now)
