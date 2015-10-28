@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.context_processors import csrf
 from models import Config
 from forms import ConfigForm
+from django.core import serializers
 
 # Create your views here.
 def config_manage(request):
@@ -22,7 +23,7 @@ def config_submit(request):
         context.update(csrf(request))
         return render(request, 'seqConfig/config/config_submit.html', context)
 
-def config_get(request, config_id):
-    config = Config.objects.get(pk=config_id)
-    json_response = ''
+def config_get(request, flowcell_id):
+    config = Config.objects.get(flowcell_id__iexact=flowcell_id)
+    json_response = serializers.serialize('json', [config, ])
     return HttpResponse(json_response)
