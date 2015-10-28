@@ -20,7 +20,7 @@ a:visited{
 }
 table a.seq-config-icon-link,
 a.seq-config-icon-link{
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 .seq-config-icon{

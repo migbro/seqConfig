@@ -10,7 +10,6 @@ from forms import ConfigForm
 from django.core import serializers
 
 
-
 def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -51,7 +50,8 @@ def config_submit(request):
     if request.method == 'POST':
         config_form = ConfigForm(request.POST, instance=Config())
         if config_form.is_valid():
-            config_form.save()
+            new_config = config_form.save(commit=False)
+
         return HttpResponseRedirect('/seqConfig/config/manage/')
     else:
         config_form = ConfigForm(instance=Config())
