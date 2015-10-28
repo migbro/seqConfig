@@ -1,0 +1,45 @@
+{% extends 'seqConfig/base.html' %}
+{% block content %}
+<div class="container">
+    <section class="bc-config-section">
+        <div class="row seq-text-center">
+            <h1 class="bc-config-header">Barcode Manager</h1>
+        </div>
+    </section>
+    <section class="bc-config-section">
+        <div class="row">
+            <a href="/seqConfig/barcode/submit/">
+                <button class="btn btn-primary btn-sm" style="margin-bottom:15px">
+                    <span class="fa fa-plus"></span>&nbsp;&nbsp;Add Barcode
+                </button>
+            </a>
+        </div>
+        <div class="row">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="col-xs-1">Barcode Number</th>
+                        <th class="col-xs-1">Name</th>
+                        <th class="col-xs-3">Sequence</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                {% for bc in barcodes %}
+                    <tr>
+                        <td>{{ bc.pk }}</td>
+                        <td>{{ bc.name }}</td>
+                        <td>{{ bc.sequence }}</td>
+                        <td>
+                            <a href="/seqConfig/barcode/edit/{{ bc.pk }}" class="bc-config-icon-link" title="Edit/Delete">
+                                <span class="fa fa-2x fa-pencil"></span>&nbsp;&nbsp;
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+{% endblock %}

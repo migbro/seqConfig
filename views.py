@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.context_processors import csrf
 from models import Config
 from models import Library
+from models import Barcode
 from forms import ConfigForm
 from django.core import serializers
 
@@ -100,3 +101,10 @@ def config_delete(request, config_id):
     if request.method == 'POST':
         Config.objects.get(pk=config_id).delete()
     return HttpResponseRedirect('/seqConfig/config/manage/')
+
+
+@login_required
+def barcode_manage(request):
+    barcodes = Barcode.objects.all()
+    context = {'barcodes': barcodes}
+    return render(request, 'seqConfig/config/barcode_manage.html', context)
