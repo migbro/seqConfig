@@ -23,7 +23,11 @@ def config_submit(request):
         context.update(csrf(request))
         return render(request, 'seqConfig/config/config_submit.html', context)
 
+
 def config_get(request, flowcell_id):
     config = Config.objects.get(flowcell_id__iexact=flowcell_id)
-    json_response = serializers.serialize('json', [config, ])
+    lanes = config.lane_set.all()
+    object_list = [lane for lane in lanes]
+    object_list.append(config)
+    json_response = serializers.serialize('json', object_list)
     return HttpResponse(json_response)
