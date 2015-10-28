@@ -14,4 +14,4 @@ class ConfigForm(forms.ModelForm):
     class Meta:
         model = Config
         fields = ['runtype', 'read1_cycles', 'read2_cycles', 'barcode_cycles',
-                  'flowcell_id', 'machine', 'created_by']
+                  'run_name', 'created_by']
