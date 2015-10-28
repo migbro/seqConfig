@@ -13,7 +13,6 @@ def config_manage(request):
     return render(request, 'seqConfig/config/config_manage.html', context)
 
 
-
 def config_submit(request):
     if request.method == 'POST':
         config_form = ConfigForm(request.POST, instance=Config())

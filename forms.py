@@ -3,6 +3,7 @@ __author__ = 'Dominic Fitzgerald'
 from django import forms
 from models import Config
 
+
 class ConfigForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ConfigForm, self).__init__(*args, **kwargs)
