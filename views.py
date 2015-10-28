@@ -27,8 +27,8 @@ def config_submit(request):
         return render(request, 'seqConfig/config/config_submit.html', context)
 
 
-def config_get(request, flowcell_id):
-    config = Config.objects.select_related().get(flowcell_id__iexact=flowcell_id)
+def config_get(request, run_name):
+    config = Config.objects.select_related().get(run_name__iexact=run_name)
     lanes = config.lane_set.all()
     object_list = [lane for lane in lanes]
     object_list.append(config)
