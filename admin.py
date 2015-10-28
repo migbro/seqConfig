@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from models import Barcode, RunType, SequencingMachine, Lane, Library, Config
+from models import Barcode, RunType, Lane, Library, Config
 
 
 class BarcodeAdmin(admin.ModelAdmin):
@@ -10,11 +10,6 @@ class BarcodeAdmin(admin.ModelAdmin):
 
 class RunTypeAdmin(admin.ModelAdmin):
     model = RunType
-    list_display = ('name', 'description')
-
-
-class SequencingMachineAdmin(admin.ModelAdmin):
-    model = SequencingMachine
     list_display = ('name', 'description')
 
 
@@ -34,7 +29,6 @@ class ConfigAdmin(admin.ModelAdmin):
 
 admin.site.register(Barcode, BarcodeAdmin)
 admin.site.register(RunType, RunTypeAdmin)
-admin.site.register(SequencingMachine, SequencingMachineAdmin)
 admin.site.register(Lane, LaneAdmin)
 admin.site.register(Library, LibraryAdmin)
 admin.site.register(Config, ConfigAdmin)
