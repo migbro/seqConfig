@@ -8,9 +8,12 @@
     </section>
     <section class="seq-config-section">
         <div class="row">
-            <button class="btn btn-primary btn-sm" style="margin-bottom:15px">
-                <span class="fa fa-plus"></span>&nbsp;&nbsp;Add Config
-            </button>
+            <a href="/seqConfig/config/submit/">
+                <button class="btn btn-primary btn-sm" style="margin-bottom:15px">
+                    <span class="fa fa-plus"></span>&nbsp;&nbsp;Add Config
+                </button>
+            </a>
+
         </div>
         <div class="row">
             <table>
@@ -19,10 +22,10 @@
                     <th class="col-xs-2">Creation Date</th>
                     <th class="col-xs-1">Type</th>
                     <th class="col-xs-1">Machine</th>
-                    <th class="col-xs-2">Flowcell ID</th>
+                    <th class="col-xs-1">Flowcell ID</th>
                     <th class="col-xs-2">Created By</th>
                     <th class="col-xs-2">Approved By</th>
-                    <th class="col-xs-1"></th>
+                    <th class="col-xs-2"></th>
                 </tr>
                 {% for config in configs %}
                     <tr>
@@ -34,6 +37,7 @@
                         <td>{{ config.created_by.username }}</td>
                         <td>{{ config.approved_by.username }}</td>
                         <td>
+                            <span class="fa fa-2x fa-check-circle"></span>&nbsp;&nbsp;
                             <span class="fa fa-2x fa-pencil"></span>&nbsp;&nbsp;
                             <span class="fa fa-2x fa-trash"></span>
                         </td>
