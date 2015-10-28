@@ -3,7 +3,7 @@
 <div class="container">
     <section class="seq-config-section">
         <div class="row seq-text-center">
-            <h1>Config Manager</h1>
+            <h1>SeqConfig Manager</h1>
         </div>
     </section>
     <section class="seq-config-section">
@@ -13,18 +13,15 @@
                     <span class="fa fa-plus"></span>&nbsp;&nbsp;Add Config
                 </button>
             </a>
-
         </div>
         <div class="row">
             <table>
                 <tr>
                     <th class="col-xs-1">Config Number</th>
                     <th class="col-xs-2">Creation Date</th>
-                    <th class="col-xs-1">Type</th>
-                    <th class="col-xs-1">Machine</th>
-                    <th class="col-xs-1">Flowcell ID</th>
-                    <th class="col-xs-2">Created By</th>
-                    <th class="col-xs-2">Approved By</th>
+                    <th class="col-xs-2">Type</th>
+                    <th class="col-xs-2">Flowcell ID (Machine)</th>
+                    <th class="col-xs-3">Created By (Approved By)</th>
                     <th class="col-xs-2"></th>
                 </tr>
                 {% for config in configs %}
@@ -32,14 +29,15 @@
                         <td>{{ config.pk }}</td>
                         <td>{{ config.creation_date }}</td>
                         <td>{{ config.runtype.name }}: {{ config.read1_cycles }}, {{ config.barcode_cycles }}, {{ config.read2_cycles }}</td>
-                        <td>{{ config.machine.name }}</td>
-                        <td>{{ config.flowcell_id }}</td>
-                        <td>{{ config.created_by.username }}</td>
-                        <td>{{ config.approved_by.username }}</td>
+                        <td>{{ config.flowcell_id }} ({{ config.machine.name }})</td>
+                        <td>{{ config.created_by.username }} ({% if config.approved_by.username %}{{ config.approved_by.username }}{% else %}Not Approved{% endif %})</td>
                         <td>
-                            <span class="fa fa-2x fa-check-circle"></span>&nbsp;&nbsp;
-                            <span class="fa fa-2x fa-pencil"></span>&nbsp;&nbsp;
-                            <span class="fa fa-2x fa-trash"></span>
+                            <a href="/seqConfig/config/edit/{{ config.pk }}" class="seq-config-icon-link" title="Edit/Delete">
+                                <span class="fa fa-2x fa-pencil"></span>&nbsp;&nbsp;
+                            </a>
+                            {% if config.approved_by %}
+                                <span class="fa fa-2x fa-check-circle seq-config-icon" title="Approved"></span>&nbsp;&nbsp;
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

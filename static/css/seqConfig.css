@@ -18,3 +18,11 @@ a:visited{
 .seq-text-center{
     text-align: center;
 }
+table a.seq-config-icon-link,
+a.seq-config-icon-link{
+    text-decoration: none;
+}
+
+.seq-config-icon{
+    color: #bf3604;
+}

@@ -1,0 +1,46 @@
+{% extends 'seqConfig/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div class="container">
+    <section class="seq-config-section">
+        <div class="row seq-text-center">
+            <h1>Edit SeqConfig</h1>
+        </div>
+    </section>
+    <section class="seq-config-section">
+        <form action="/seqConfig/config/delete/{{ config_id }}/" method="post" id="config_delete_form">
+            {% csrf_token %}
+        </form>
+        <form action="/seqConfig/config/edit/{{ config_id }}/" method="post" id="config_edit_form">
+            {% csrf_token %}
+            {% for field in config_form %}
+            <div class="row" style="margin-bottom:15px">
+                <div class="col-sm-2 col-sm-offset-2">
+                    {{ field.label_tag }}
+                </div>
+                <div class="col-sm-6">
+                    {{ field }}
+                </div>
+            </div>
+            {% endfor %}
+        </form>
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <button type="button" id="submit_edit" class="btn btn-primary" style="float:right">
+                   <span class="fa fa-wrench"></span>&nbsp;&nbsp;
+                   Update
+                </button>
+                <button type="button" id="submit_edit" class="btn btn-primary" style="float:right;margin-right:12px">
+                   <span class="fa fa-check-circle"></span>&nbsp;&nbsp;
+                   Approve SeqConfig
+                </button>
+                <button type="button" id="submit_delete" class="btn btn-primary" data-clicked="0">
+                   <span class="fa fa-trash"></span>&nbsp;&nbsp;
+                   Trash it
+                </button>
+            </div>
+        </div>
+    </section>
+</div>
+<script src="{% static 'js/config/config_edit.js' %}"></script>
+{% endblock %}
