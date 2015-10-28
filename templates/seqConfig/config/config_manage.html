@@ -15,15 +15,18 @@
             </a>
         </div>
         <div class="row">
-            <table class="table table-striped">
-                <tr>
-                    <th class="col-xs-1">Config Number</th>
-                    <th class="col-xs-2">Creation Date</th>
-                    <th class="col-xs-2">Type</th>
-                    <th class="col-xs-2">Illumina Run Name</th>
-                    <th class="col-xs-3">Created By (Approved By)</th>
-                    <th class="col-xs-2"></th>
-                </tr>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="col-xs-1">Config Number</th>
+                        <th class="col-xs-2">Creation Date</th>
+                        <th class="col-xs-2">Type</th>
+                        <th class="col-xs-2">Illumina Run Name</th>
+                        <th class="col-xs-3">Created By (Approved By)</th>
+                        <th class="col-xs-2"></th>
+                    </tr>
+                </thead>
+                <tbody>
                 {% for config in configs %}
                     <tr>
                         <td>{{ config.pk }}</td>
@@ -41,6 +44,7 @@
                         </td>
                     </tr>
                 {% endfor %}
+                </tbody>
             </table>
         </div>
     </section>
