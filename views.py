@@ -50,7 +50,8 @@ def config_submit(request):
         config_form = ConfigForm(request.POST, instance=Config())
         if config_form.is_valid():
             new_config = config_form.save(commit=False)
-
+            new_config.created_by = request.user
+            new_config.save()
         return HttpResponseRedirect('/seqConfig/config/manage/')
     else:
         config_form = ConfigForm(instance=Config())
