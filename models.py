@@ -36,9 +36,8 @@ class Config(models.Model):
                                        blank=True, null=True)
     barcode_cycles = models.IntegerField(verbose_name='Config Barcode Cycles',
                                          blank=True, null=True)
-    flowcell_id = models.CharField(max_length=64, verbose_name='Config Flowcell ID',
-                                   blank=True, null=True)
-    machine = models.ForeignKey(SequencingMachine, verbose_name='Config Machine')
+    run_name = models.CharField(max_length=64, verbose_name='Run Name',
+                                blank=True, null=True)
     created_by = models.ForeignKey(User, verbose_name='Config User Created By',
                                    related_name='created_by_user')
     approved_by = models.ForeignKey(User, verbose_name='Config User Approved By',

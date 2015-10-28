@@ -6,11 +6,12 @@ from models import Library
 from forms import ConfigForm
 from django.core import serializers
 
-# Create your views here.
+
 def config_manage(request):
     configs = Config.objects.all()
     context = {'configs': configs}
     return render(request, 'seqConfig/config/config_manage.html', context)
+
 
 def config_submit(request):
     if request.method == 'POST':
