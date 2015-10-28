@@ -28,7 +28,7 @@ class Config(models.Model):
                                        blank=True, null=True)
     barcode_cycles = models.IntegerField(verbose_name='Config Barcode Cycles',
                                          blank=True, null=True)
-    run_name = models.CharField(max_length=64, verbose_name='Run Name',
+    run_name = models.CharField(max_length=64, verbose_name='Illumina Run Name',
                                 blank=True, null=True)
     created_by = models.ForeignKey(User, verbose_name='Config User Created By',
                                    related_name='created_by_user')
