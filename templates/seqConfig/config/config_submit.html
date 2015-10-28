@@ -1,18 +1,30 @@
 {% extends 'seqConfig/base.html' %}
 {% block content %}
 <div class="container">
-    <div class="row">
+    <section class="seq-config-section">
+        <div class="row seq-text-center">
+            <h1>Submit New SeqConfig</h1>
+        </div>
+    </section>
+    <section class="seq-config-section">
         <form action="/seqConfig/config/submit/" method="post">
             {% csrf_token %}
             {% for field in config_form %}
-                <div class="col-sm-2">
+            <div class="row" style="margin-bottom:15px">
+                <div class="col-sm-2 col-sm-offset-2">
                     {{ field.label_tag }}
                 </div>
                 <div class="col-sm-6">
                     {{ field }}
                 </div>
+            </div>
             {% endfor %}
+            <div class="row">
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary" style="float:right">Submit</button>
+                </div>
+            </div>
         </form>
-    </div>
+    </section>
 </div>
 {% endblock %}

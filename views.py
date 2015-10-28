@@ -16,7 +16,7 @@ def config_submit(request):
         config_form = ConfigForm(request.POST, instance=Config())
         if config_form.is_valid():
             config_form.save()
-        return HttpResponseRedirect('seqConfig/config/manage/')
+        return HttpResponseRedirect('/seqConfig/config/manage/')
     else:
         config_form = ConfigForm(instance=Config())
         context = {'config_form': config_form}

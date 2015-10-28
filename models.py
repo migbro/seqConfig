@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import django.utils.timezone
 
 
 class Barcode(models.Model):
@@ -27,7 +28,8 @@ class SequencingMachine(models.Model):
 
 
 class Config(models.Model):
-    creation_date = models.DateTimeField(verbose_name='Config Creation Datetime')
+    creation_date = models.DateTimeField(verbose_name='Config Creation Datetime',
+                                         default=django.utils.timezone.now)
     runtype = models.ForeignKey(RunType, verbose_name='Config RunType')
     read1_cycles = models.IntegerField(verbose_name='Config Read1 Cycles')
     read2_cycles = models.IntegerField(verbose_name='Config Read2 Cycles',
@@ -41,9 +43,9 @@ class Config(models.Model):
                                    related_name='created_by_user')
     approved_by = models.ForeignKey(User, verbose_name='Config User Approved By',
                                     related_name='approved_by_user', blank=True,
-                                    null=True)
+                                    null=True, default=None)
     approved_date = models.DateTimeField(verbose_name='Config Approved By Datetime',
-                                         blank=True, null=True)
+                                         blank=True, null=True, default=None)
 
     def __str__(self):
         return '{}'.format(self.pk)
