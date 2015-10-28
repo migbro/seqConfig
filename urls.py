@@ -6,6 +6,8 @@ import views
 __author__ = 'Miguel'
 
 urlpatterns = patterns('',
+                       url(r'^login/', views.user_login, name='login'),
+                       url(r'^logout/', views.user_logout, name='logout'),
                        url(r'^config/manage/$', views.config_manage, name='config manage'),
                        url(r'^config/submit/$', views.config_submit, name='config submit'),
                        url(r'^config/edit/(?P<config_id>\d+)/$', views.config_edit, name='config edit'),

@@ -1,0 +1,41 @@
+{% extends 'seqConfig/base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div class="container">
+        <section class="seq-config-section">
+            <div class="row seq-text-center">
+                <h1 class="seq-config-header-thin">HGAC SeqConfig Management System</h1>
+                <img src="{% static 'images/hiseq-2000.jpg' %}" alt="HGAC" style="max-height:20em"/>
+            </div>
+        </section>
+        <section class="seq-config-section">
+            <form action="/seqConfig/login/" method="post">
+                    {% csrf_token %}
+                <div class="row seq-text-center" style="margin-bottom:15px">
+                    <div class="col-sm-1 col-sm-offset-2">
+                        <label for="username">Username</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" id="username" name="username" class="form-control">
+                    </div>
+                </div>
+                <div class="row seq-text-center" style="margin-bottom:15px">
+                    <div class="col-sm-1 col-sm-offset-2">
+                        <label for="password">Password</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="password" id="password" name="password" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-7 col-sm-offset-2">
+                        <button type="submit" class="btn btn-primary" style="float:right">
+                            Login&nbsp;&nbsp;<span class="fa fa-sign-in"></span>
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </section>
+    </div>
+{% endblock content %}

@@ -26,3 +26,12 @@ a.seq-config-icon-link{
 .seq-config-icon{
     color: #bf3604;
 }
+
+.seq-config-header{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+}
+.seq-config-header-thin{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 100;
+}
