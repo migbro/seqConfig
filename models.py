@@ -50,10 +50,17 @@ class Lane(models.Model):
         return '{}'.format(self.number)
 
 
+class Submitter(models.Model):
+    name = models.CharField(max_length=32, verbose_name='Submitter')
+
+    def __str__(self):
+        return self.name
+
+
 class Library(models.Model):
-    lane = models.ManyToManyField(Lane, verbose_name='Library Lane')
+    lane = models.ForeignKey(Lane, verbose_name='Library Lane')
     bionimbus_id = models.CharField(max_length=16, verbose_name='Library Bionimbus ID')
-    submitter = models.ForeignKey(User, verbose_name='Library User Submitter')
+    submitter = models.ForeignKey(Submitter, verbose_name='Library User Submitter')
     barcode = models.ForeignKey(Barcode, verbose_name='Library Barcode')
     cluster_station_concentration = models.FloatField(
         verbose_name='Library Cluster Station Concentration')
