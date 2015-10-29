@@ -44,7 +44,7 @@ class Config(models.Model):
 
 class Lane(models.Model):
     number = models.SmallIntegerField(verbose_name='Lane Number')
-    config = models.ForeignKey(Config, verbose_name='Lane Config')
+    config = models.ForeignKey(Config, verbose_name='Config id')
 
     def __str__(self):
         return '{}'.format(self.number)
