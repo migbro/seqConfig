@@ -63,3 +63,10 @@ class Library(models.Model):
 
     class Meta:
         verbose_name_plural = 'Libraries'
+
+class LaneCount(models.Model):
+    name = models.CharField(max_length=128, verbose_name='Lane Count Name')
+    count = models.SmallIntegerField(verbose_name='Lane Count')
+
+    def __str__(self):
+        return '{}: {}'.format(self.name, self.count)

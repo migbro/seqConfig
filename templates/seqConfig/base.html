@@ -5,15 +5,34 @@
     <meta charset="UTF-8">
     <title>HGAC SeqConfig Management System</title>
 
+    <!-- Web Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300|Open+Sans" rel="stylesheet" type="text/css">
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
+    <!-- JQuery javascript library -->
+    <script src="{% static 'jslib/jquery-2.1.4.min.js' %}"></script>
+
+    <!-- Bootstrap CSS Framework -->
     <link href="{% static 'css/bootstrap.flatly.css' %}" rel="stylesheet" />
     <link href="{% static 'css/simple.navbar.css' %}" rel="stylesheet" />
+    <script src="{% static 'jslib/bootstrap.min.js' %}"></script>
+
+    <!-- animate.css Animation Framework -->
+    <link href="{% static 'css/animate.min.css' %}" rel="stylesheet"/>
+
+    <!-- SeqConfig Application CSS -->
     <link href="{% static 'css/seqConfig.css' %}" rel="stylesheet" />
 
-    <script src="{% static 'jslib/jquery-2.1.4.min.js' %}"></script>
+
+
+    <!-- JBox JQuery plugin -->
+    <link href="{% static 'css/jBox.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/ModalBorder.css' %}" rel="stylesheet"/>
+    <script src="{% static 'jslib/jBox.min.js' %}"></script>
+
+    <!-- Select2 JQuery plugin -->
+    <link href="{% static 'css/select2.css' %}" rel="stylesheet"/>
+    <script src="{% static 'jslib/select2.min.js' %}"></script>
 </head>
 <body>
 {% block header %}

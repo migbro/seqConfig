@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.context_processors import csrf
-from models import Config
+from models import Config, LaneCount
 from models import Library
 from models import Barcode
 from forms import ConfigForm
@@ -56,7 +56,11 @@ def config_submit(request):
         return HttpResponseRedirect('/seqConfig/config/manage/')
     else:
         config_form = ConfigForm(instance=Config())
-        context = {'config_form': config_form}
+        lane_counts = LaneCount.objects.all()
+        context = {
+            'config_form': config_form,
+            'lane_counts': lane_counts
+        }
         context.update(csrf(request))
         return render(request, 'seqConfig/config/config_submit.html', context)
 
@@ -109,3 +113,7 @@ def barcode_manage(request):
     barcodes = Barcode.objects.all()
     context = {'barcodes': barcodes}
     return render(request, 'seqConfig/config/barcode_manage.html', context)
+
+
+def ajax_config_lane(request, num_lanes):
+    return render(request, 'seqConfig/ajax/config_lane.html', {'num_lanes': range(1, int(num_lanes) + 1)})

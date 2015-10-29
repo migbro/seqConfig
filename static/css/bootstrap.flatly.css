@@ -2571,7 +2571,8 @@ output {
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 .form-control:focus {
-  border-color: #2c3e50;
+  /*border-color: #2c3e50;*/
+  border-color: #bf3604;
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(44, 62, 80, 0.6);
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(44, 62, 80, 0.6);
@@ -5763,22 +5764,28 @@ button.list-group-item-danger.active:focus {
   border-bottom-color: #ecf0f1;
 }
 .panel-primary {
-  border-color: #2c3e50;
+  /*border-color: #2c3e50;*/
+  border-color: #dce4ec;
 }
 .panel-primary > .panel-heading {
   color: #ffffff;
-  background-color: #2c3e50;
-  border-color: #2c3e50;
+  /*background-color: #2c3e50;*/
+  background-color: #bf3604;
+  /*border-color: #2c3e50;*/
+  border-color: #bf3604;
 }
 .panel-primary > .panel-heading + .panel-collapse > .panel-body {
-  border-top-color: #2c3e50;
+  /*border-top-color: #2c3e50;*/
+  border-top-color: #bf3604;
 }
 .panel-primary > .panel-heading .badge {
-  color: #2c3e50;
+  /*color: #2c3e50;*/
+  color: #bf3604;
   background-color: #ffffff;
 }
 .panel-primary > .panel-footer + .panel-collapse > .panel-body {
-  border-bottom-color: #2c3e50;
+  /*border-bottom-color: #2c3e50;*/
+  border-bottom-color: #bf3604;
 }
 .panel-success {
   border-color: #18bc9c;

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from models import Barcode, RunType, Lane, Library, Config
+from models import Barcode, RunType, Lane, Library, Config, LaneCount
 
 
 class BarcodeAdmin(admin.ModelAdmin):
@@ -15,6 +15,10 @@ class RunTypeAdmin(admin.ModelAdmin):
 
 class LaneAdmin(admin.ModelAdmin):
     model = Lane
+
+
+class LaneCountAdmin(admin.ModelAdmin):
+    model = LaneCount
 
 
 class LibraryAdmin(admin.ModelAdmin):
@@ -32,3 +36,4 @@ admin.site.register(RunType, RunTypeAdmin)
 admin.site.register(Lane, LaneAdmin)
 admin.site.register(Library, LibraryAdmin)
 admin.site.register(Config, ConfigAdmin)
+admin.site.register(LaneCount, LaneCountAdmin)
