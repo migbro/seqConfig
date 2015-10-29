@@ -16,7 +16,7 @@ urlpatterns = patterns('',
                        url(r'^config/delete/(?P<config_id>\d+)/$', views.config_delete, name='config delete'),
                        url(r'^config/get/(?P<flowcell_id>\S+)/$', views.config_get, name='config_get'),
                        url(r'^barcode/manage/$', views.barcode_manage, name='barcode manage'),
-
+                       url(r'^barcode/submit/$', views.barcode_submit, name='barcode submit'),
                        url(r'^ajax/config/lane/(?P<num_lanes>\d+)/$', views.ajax_config_lane,
                            name='ajax_config_lane'),
                        ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -112,7 +112,13 @@ def config_delete(request, config_id):
 def barcode_manage(request):
     barcodes = Barcode.objects.all()
     context = {'barcodes': barcodes}
-    return render(request, 'seqConfig/config/barcode_manage.html', context)
+    return render(request, 'seqConfig/barcode/barcode_manage.html', context)
+
+@login_required
+def barcode_submit(request):
+    barcodes = Barcode.objects.all()
+    context = {'barcodes': barcodes}
+    return render(request, 'seqConfig/barcode/barcode_submit.html', context)
 
 
 def ajax_config_lane(request, num_lanes):
