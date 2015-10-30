@@ -7,6 +7,7 @@ from models import Config, LaneCount
 from models import Library
 from models import Barcode
 from forms import ConfigForm
+import json
 from django.core import serializers
 
 
@@ -92,16 +93,18 @@ def config_get(request, run_name):
     """
     config = Config.objects.select_related().get(run_name__iexact=run_name)
     lanes = config.lane_set.all()
-    object_list = [lane for lane in lanes]
-    object_list.append(config)
-    for lane in lanes:
-        #     print lane
-        cur = Library.objects.select_related().get(lane=lane.number)
-        object_list.append(cur)
-        object_list.append(cur.barcode)
+    json_response = {'run_name': config.run_name, 'run_type': config.runtype.name, 'read1_cycles': config.read1_cycles,
+                     'read2_cycles': config.read2_cycles, 'barcode_cycles': config.barcode_cycles}
+    json_response['Lane'] = {}
 
-    json_response = serializers.serialize('json', object_list)
-    return HttpResponse(json_response)
+    for lane in lanes:
+        related = Library.objects.select_related().filter(lane=lane.pk)
+        for cur in related:
+            json_response['Lane'][lane.number] = {}
+            json_response['Lane'][lane.number][cur.bionimbus_id] = {'submitter': cur.submitter.name,
+                                              'barcode_name': cur.barcode.name, 'barcode_seq': cur.barcode.sequence}
+    pretty = json.dumps(json_response, sort_keys=True, indent=4)
+    return HttpResponse(pretty)
 
 
 @login_required
