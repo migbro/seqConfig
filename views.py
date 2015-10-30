@@ -95,13 +95,13 @@ def config_get(request, run_name):
     lanes = config.lane_set.all()
     json_response = {'run_name': config.run_name, 'run_type': config.runtype.name, 'read1_cycles': config.read1_cycles,
                      'read2_cycles': config.read2_cycles, 'barcode_cycles': config.barcode_cycles}
-    json_response['Lane'] = {}
+    json_response['Lanes'] = {}
 
     for lane in lanes:
         related = Library.objects.select_related().filter(lane=lane.pk)
         for cur in related:
-            json_response['Lane'][lane.number] = {}
-            json_response['Lane'][lane.number][cur.bionimbus_id] = {'submitter': cur.submitter.name,
+            json_response['Lanes'][lane.number] = {}
+            json_response['Lanes'][lane.number][cur.bionimbus_id] = {'submitter': cur.submitter.name,
                                               'barcode_name': cur.barcode.name, 'barcode_seq': cur.barcode.sequence}
     pretty = json.dumps(json_response, sort_keys=True, indent=4)
     return HttpResponse(pretty)
