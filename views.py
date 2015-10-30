@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -7,8 +9,6 @@ from models import Config, LaneCount
 from models import Library
 from models import Barcode
 from forms import ConfigForm
-import json
-from django.core import serializers
 
 
 def user_login(request):
@@ -99,10 +99,11 @@ def config_get(request, run_name):
 
     for lane in lanes:
         related = Library.objects.select_related().filter(lane=lane.pk)
+        json_response['Lane'][lane.number] = {}
         for cur in related:
-            json_response['Lane'][lane.number] = {}
             json_response['Lane'][lane.number][cur.bionimbus_id] = {'submitter': cur.submitter.name,
-                                              'barcode_name': cur.barcode.name, 'barcode_seq': cur.barcode.sequence}
+                                                                    'barcode_name': cur.barcode.name,
+                                                                    'barcode_seq': cur.barcode.sequence}
     pretty = json.dumps(json_response, sort_keys=True, indent=4)
     return HttpResponse(pretty)
 
