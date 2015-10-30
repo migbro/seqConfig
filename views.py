@@ -71,10 +71,12 @@ def config_get(request, run_name):
     object_list = [lane for lane in lanes]
     object_list.append(config)
     for lane in lanes:
-        print lane
-        object_list.append(Library.objects.get(lane=lane.number))
+        #     print lane
+        cur = Library.objects.select_related().get(lane=lane.number)
+        object_list.append(cur)
+        object_list.append(cur.barcode)
+
     json_response = serializers.serialize('json', object_list)
-    #json_response = serializers.serialize('json', [config, ])
     return HttpResponse(json_response)
 
 
@@ -113,6 +115,7 @@ def barcode_manage(request):
     barcodes = Barcode.objects.all()
     context = {'barcodes': barcodes}
     return render(request, 'seqConfig/barcode/barcode_manage.html', context)
+
 
 @login_required
 def barcode_submit(request):
