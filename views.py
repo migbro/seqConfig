@@ -66,6 +66,30 @@ def config_submit(request):
 
 
 def config_get(request, run_name):
+    """
+    return a dict -
+    {run_name: 151015_SN673_0235_AH4BHLCXX
+     run_type: paired-end
+     read1_cycles: 101
+     read2_cycles: 101
+     barcode_cycles: 6
+     Lanes: {
+        1: {
+            2015-1234: {
+            submitter:
+            barcode_name:
+            barcode_seq:
+            },
+            2015-1235: {
+            }
+        }
+        2: {
+        }
+     }
+    :param request:
+    :param run_name:
+    :return: HttpResponse(json)
+    """
     config = Config.objects.select_related().get(run_name__iexact=run_name)
     lanes = config.lane_set.all()
     object_list = [lane for lane in lanes]
