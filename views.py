@@ -104,7 +104,6 @@ def config_get(request, run_name):
             json_response['Lanes'][lane.number][cur.bionimbus_id] = {'submitter': cur.submitter.name,
                                                                     'barcode_name': cur.barcode.name,
                                                                     'barcode_seq': cur.barcode.sequence}
-            json_response['Lanes'][lane.number] = {}
             json_response['Lanes'][lane.number][cur.bionimbus_id] = {'submitter': cur.submitter.name,
                                               'barcode_name': cur.barcode.name, 'barcode_seq': cur.barcode.sequence}
     pretty = json.dumps(json_response, sort_keys=True, indent=4)
