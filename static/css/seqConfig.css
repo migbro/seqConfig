@@ -36,6 +36,25 @@ a.seq-config-icon-link{
     font-weight: 100;
 }
 
+label{
+    margin-top: 1em;
+}
+
+.library-lane{
+    padding-top: 1.3em;
+    padding-bottom:1.3em;
+}
+.library-lane-vertical-center{
+    margin-top: 0.8em;
+}
+.even-library-lane{
+    background-color: #f2f2f2;
+}
+.library-lane-header{
+    font-weight: bold;
+    margin-bottom: 1.3em;
+}
+
 
 /* Panel Tabs */
 .panel.with-nav-tabs .panel-heading{
@@ -70,20 +89,4 @@ a.seq-config-icon-link{
 	background-color: #fff;
 	border-color: #8B2702;
 	border-bottom-color: transparent;
-}
-.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu {
-    background-color: #8B2702;
-    border-color: #8B2702;
-}
-.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > li > a {
-    color: #fff;
-}
-.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > li > a:hover,
-.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > li > a:focus {
-    background-color: #8B2702;
-}
-.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > .active > a,
-.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > .active > a:hover,
-.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
-    background-color: #8B2702;
 }

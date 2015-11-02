@@ -19,4 +19,6 @@ urlpatterns = patterns('',
                        url(r'^barcode/submit/$', views.barcode_submit, name='barcode submit'),
                        url(r'^ajax/config/lane/(?P<num_lanes>\d+)/$', views.ajax_config_lane,
                            name='ajax_config_lane'),
+                       url(r'^ajax/config/library/(?P<start>\d+)/(?P<stop>\d+)/(?P<lane>\d+)/$', views.ajax_config_library,
+                           name='ajax_config_library'),
                        ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -3,7 +3,7 @@
  */
 $(document).ready(function(){
     $('#lane-count-select').select2({
-        minimumResultsForSearch: -1
+        minimumResultsForSearch: Infinity
     }).change(function(){
         var numLanes = $(this).val();
         var $lanesSection = $('#lanes-section');
@@ -12,7 +12,12 @@ $(document).ready(function(){
             $lanesSection.append($(data));
         });
     }).change();
+
     $('#id_runtype').select2({
-        minimumResultsForSearch: -1
+        minimumResultsForSearch: Infinity
+    });
+
+    $('.btn-submit').click(function(){
+        $('form').submit();
     });
 });

@@ -12,21 +12,21 @@
             {% csrf_token %}
             {% for field in config_form %}
             <div class="row" style="margin-bottom:15px">
-                <div class="col-sm-2 col-sm-offset-2">
+                <div class="col-sm-2 col-sm-offset-1">
                     {{ field.label_tag }}
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-8">
                     {{ field }}
                 </div>
             </div>
             {% endfor %}
             <section class="seq-config-section">
                 <div class="row" style="margin-bottom:15px">
-                    <div class="col-sm-2 col-sm-offset-4">
+                    <div class="col-sm-2 col-sm-offset-5">
                         <label for="lane-count-select">Lane Count:</label>
                     </div>
                     <div class="col-sm-4">
-                        <select id="lane-count-select" class="form-control">
+                        <select id="lane-count-select" class="form-control" name="lane_count">
                             {% for lane_count in lane_counts %}
                             <option value="{{ lane_count.count }}">{{ lane_count.count }}</option>
                             {% endfor %}
@@ -35,17 +35,16 @@
                 </div>
                 <div id="lanes-section"></div>
             </section>
-            <section class="seq-config-section">
+            <section>
                 <div class="row">
-                    <div class="col-sm-10">
-                       <button type="submit" class="btn btn-primary" style="float:right">
+                    <div class="col-sm-11">
+                       <button type="button" class="btn btn-primary btn-submit" style="float:right">
                            <span class="fa fa-cogs"></span>&nbsp;&nbsp;
                            Submit
                         </button>
                     </div>
                 </div>
             </section>
-
         </form>
     </section>
 </div>

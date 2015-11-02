@@ -1,0 +1,28 @@
+{% load staticfiles %}
+{% for lib in libs %}
+<div class="row library-lane{% if not lib|divisibleby:2 %} even-library-lane{% endif %}" data-n="{{ lib }}">
+    <div class="col-sm-2">
+        <input type="text" class="form-control" placeholder="Library {{ lib }}" name="bionimbus_id__lane_{{ lane }}__lib_{{ lib }}"/>
+    </div>
+    <div class="col-sm-2 library-lane-vertical-center">Project</div>
+    <div class="col-sm-2">
+        <select class="form-control submitter-select" name="submitter__lane_{{ lane }}__lib_{{ lib }}">
+            {% for submitter in submitters %}
+            <option value="{{ submitter.pk }}">{{ submitter.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-sm-2">
+        <select class="form-control barcode-select" name="barcode__lane_{{ lane }}__lib_{{ lib }}">
+            {% for barcode in barcodes %}
+            <option value="{{ barcode.pk }}" data-barcodeseq="{{ barcode.sequence }}">{{ barcode.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-sm-2 library-lane-vertical-center" style="overflow-x:auto">AGTC</div>
+    <div class="col-sm-2">
+        <input type="text" class="form-control" name="cluster_station_concentration__lane_{{ lane }}__lib_{{ lib }}"/>
+    </div>
+</div>
+{% endfor %}
+<script src="{% static 'js/config/config_library.js' %}" async></script>

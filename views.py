@@ -5,9 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.context_processors import csrf
-from models import Config, LaneCount
-from models import Library
-from models import Barcode
+from models import *
 from forms import ConfigForm
 
 
@@ -54,6 +52,28 @@ def config_submit(request):
             new_config = config_form.save(commit=False)
             new_config.created_by = request.user
             new_config.save()
+
+            num_lanes = request.POST.get('lane_count')
+            for lane in range(1, int(num_lanes) + 1):
+                new_lane = Lane(
+                    number=lane,
+                    config=new_config
+                )
+                new_lane.save()
+
+                num_libraries = request.POST.get('num_libraries__lane_' + str(lane))
+                for library in range(1, int(num_libraries) + 1):
+                    library_tag = '__lane_{}__lib_{}'.format(lane, library)
+                    submitter = Submitter.objects.get(pk=int(request.POST.get('submitter' + library_tag)))
+                    barcode = Barcode.objects.get(pk=request.POST.get('barcode' + library_tag))
+                    new_library = Library(
+                        lane=new_lane,
+                        bionimbus_id=request.POST.get('bionimbus_id' + library_tag),
+                        submitter=submitter,
+                        barcode=barcode,
+                        cluster_station_concentration=request.POST.get('cluster_station_concentration' + library_tag)
+                    )
+                    new_library.save()
         return HttpResponseRedirect('/seqConfig/config/manage/')
     else:
         config_form = ConfigForm(instance=Config())
@@ -156,5 +176,13 @@ def barcode_submit(request):
 
 
 def ajax_config_lane(request, num_lanes):
-    return render(request, 'seqConfig/ajax/config_lane.html',
-                  {'num_lanes': range(1, int(num_lanes) + 1)})
+    return render(request, 'seqConfig/ajax/config_lane.html', {'num_lanes': range(1, int(num_lanes) + 1)})
+
+
+def ajax_config_library(request, start, stop, lane):
+    return render(request, 'seqConfig/ajax/config_library.html', {
+        'lane': lane,
+        'libs': range(int(start), int(stop) + 1),
+        'submitters': Submitter.objects.all(),
+        'barcodes': Barcode.objects.all()
+    })
