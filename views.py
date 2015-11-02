@@ -93,8 +93,9 @@ def config_get(request, run_name):
     """
     config = Config.objects.select_related().get(run_name__iexact=run_name)
     lanes = config.lane_set.all()
-    json_response = {'run_name': config.run_name, 'run_type': config.runtype.name, 'read1_cycles': config.read1_cycles,
-                     'read2_cycles': config.read2_cycles, 'barcode_cycles': config.barcode_cycles}
+    json_response = {'run_name': config.run_name, 'run_type': config.runtype.name,
+                     'read1_cycles': config.read1_cycles, 'read2_cycles': config.read2_cycles,
+                     'barcode_cycles': config.barcode_cycles}
     json_response['Lanes'] = {}
 
     for lane in lanes:
@@ -105,7 +106,7 @@ def config_get(request, run_name):
                                                                     'barcode_name': cur.barcode.name,
                                                                     'barcode_seq': cur.barcode.sequence}
             json_response['Lanes'][lane.number][cur.bionimbus_id] = {'submitter': cur.submitter.name,
-                                              'barcode_name': cur.barcode.name, 'barcode_seq': cur.barcode.sequence}
+                    'barcode_name': cur.barcode.name, 'barcode_seq': cur.barcode.sequence}
     pretty = json.dumps(json_response, sort_keys=True, indent=4)
     return HttpResponse(pretty)
 
@@ -155,4 +156,5 @@ def barcode_submit(request):
 
 
 def ajax_config_lane(request, num_lanes):
-    return render(request, 'seqConfig/ajax/config_lane.html', {'num_lanes': range(1, int(num_lanes) + 1)})
+    return render(request, 'seqConfig/ajax/config_lane.html',
+                  {'num_lanes': range(1, int(num_lanes) + 1)})
