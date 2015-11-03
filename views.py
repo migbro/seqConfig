@@ -1,12 +1,13 @@
 import json
 
-from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
 from django.core.context_processors import csrf
-from models import *
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
+from forms import BarcodeForm
 from forms import ConfigForm
+from models import *
 
 
 def user_login(request):
@@ -123,10 +124,11 @@ def config_get(request, run_name):
         json_response['Lanes'][lane.number] = {}
         for cur in related:
             json_response['Lanes'][lane.number][cur.bionimbus_id] = {'submitter': cur.submitter.name,
-                                                                    'barcode_name': cur.barcode.name,
-                                                                    'barcode_seq': cur.barcode.sequence}
+                                                                     'barcode_name': cur.barcode.name,
+                                                                     'barcode_seq': cur.barcode.sequence}
             json_response['Lanes'][lane.number][cur.bionimbus_id] = {'submitter': cur.submitter.name,
-                    'barcode_name': cur.barcode.name, 'barcode_seq': cur.barcode.sequence}
+                                                                     'barcode_name': cur.barcode.name,
+                                                                     'barcode_seq': cur.barcode.sequence}
     pretty = json.dumps(json_response, sort_keys=True, indent=4)
     return HttpResponse(pretty)
 
@@ -170,9 +172,36 @@ def barcode_manage(request):
 
 @login_required
 def barcode_submit(request):
-    barcodes = Barcode.objects.all()
-    context = {'barcodes': barcodes}
-    return render(request, 'seqConfig/barcode/barcode_submit.html', context)
+    if request.method == 'POST':
+        barcode_form = BarcodeForm(request.POST, instance=Barcode())
+        if barcode_form.is_valid():
+            new_barcode = barcode_form.save(commit=False)
+            new_barcode.created_by = request.user
+            new_barcode.save()
+        return HttpResponseRedirect('/seqConfig/barcode/manage/')
+    else:
+        barcode_form = BarcodeForm(instance=Barcode())
+        context = {
+            'barcode_form': barcode_form
+        }
+        context.update(csrf(request))
+        return render(request, 'seqConfig/barcode/barcode_submit.html', context)
+
+
+@login_required
+def barcode_edit(request, barcode_id):
+    barcode = Barcode.objects.get(pk=barcode_id)
+    if request.method == 'POST':
+        updated_barcode_form = BarcodeForm(request.POST, instance=barcode)
+        if updated_barcode_form.is_valid():
+            updated_barcode_form.save()
+            return HttpResponseRedirect('/seqConfig/barcode/manage/')
+    else:
+        barcode_form = BarcodeForm(instance=barcode)
+        context = {'barcode_form': barcode_form,
+                   'barcode_id': barcode.pk}
+        context.update(csrf(request))
+        return render(request, 'seqConfig/barcode/barcode_edit.html', context)
 
 
 def ajax_config_lane(request, num_lanes):

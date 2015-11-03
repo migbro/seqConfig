@@ -1,7 +1,7 @@
-from django.conf.urls import url, patterns
-from django.conf import settings
-from django.conf.urls.static import static
 import views
+from django.conf import settings
+from django.conf.urls import url, patterns
+from django.conf.urls.static import static
 
 __author__ = 'Miguel'
 
@@ -17,8 +17,11 @@ urlpatterns = patterns('',
                        url(r'^config/get/(?P<run_name>\S+)/$', views.config_get, name='config_get'),
                        url(r'^barcode/manage/$', views.barcode_manage, name='barcode manage'),
                        url(r'^barcode/submit/$', views.barcode_submit, name='barcode submit'),
+                       url(r'^barcode/edit/(?P<barcode_id>\d+)/$', views.barcode_edit, name='barcode edit'),
+
                        url(r'^ajax/config/lane/(?P<num_lanes>\d+)/$', views.ajax_config_lane,
                            name='ajax_config_lane'),
-                       url(r'^ajax/config/library/(?P<start>\d+)/(?P<stop>\d+)/(?P<lane>\d+)/$', views.ajax_config_library,
+                       url(r'^ajax/config/library/(?P<start>\d+)/(?P<stop>\d+)/(?P<lane>\d+)/$',
+                           views.ajax_config_library,
                            name='ajax_config_library'),
                        ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
