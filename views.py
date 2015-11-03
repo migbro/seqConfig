@@ -204,6 +204,13 @@ def barcode_edit(request, barcode_id):
         return render(request, 'seqConfig/barcode/barcode_edit.html', context)
 
 
+@login_required
+def barcode_delete(request, barcode_id):
+    if request.method == 'POST':
+        Barcode.objects.get(pk=barcode_id).delete()
+    return HttpResponseRedirect('/seqConfig/barcode/manage/')
+
+
 def ajax_config_lane(request, num_lanes):
     return render(request, 'seqConfig/ajax/config_lane.html', {'num_lanes': range(1, int(num_lanes) + 1)})
 
