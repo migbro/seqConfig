@@ -8,6 +8,7 @@ from django.shortcuts import render
 from forms import BarcodeForm
 from forms import ConfigForm
 from models import *
+from datetime import datetime
 
 
 def user_login(request):
@@ -139,21 +140,58 @@ def config_edit(request, config_id):
     if request.method == 'POST':
         updated_config_form = ConfigForm(request.POST, instance=config)
         if updated_config_form.is_valid():
-            updated_config_form.save()
-            return HttpResponseRedirect('/seqConfig/config/manage/')
+            updated_config = updated_config_form.save()
+            Library.objects.filter(lane__config=updated_config).delete()
+            updated_config.lane_set.all().delete()
+            num_lanes = request.POST.get('lane_count')
+            for lane in range(1, int(num_lanes) + 1):
+                new_lane = Lane(
+                    number=lane,
+                    config=updated_config
+                )
+                new_lane.save()
+
+                num_libraries = request.POST.get('num_libraries__lane_' + str(lane))
+                for library in range(1, int(num_libraries) + 1):
+                    library_tag = '__lane_{}__lib_{}'.format(lane, library)
+                    submitter = Submitter.objects.get(pk=int(request.POST.get('submitter' + library_tag)))
+                    barcode = Barcode.objects.get(pk=request.POST.get('barcode' + library_tag))
+                    new_library = Library(
+                        lane=new_lane,
+                        bionimbus_id=request.POST.get('bionimbus_id' + library_tag),
+                        submitter=submitter,
+                        barcode=barcode,
+                        cluster_station_concentration=request.POST.get('cluster_station_concentration' + library_tag)
+                    )
+                    new_library.save()
+        return HttpResponseRedirect('/seqConfig/config/manage/')
     else:
         config_form = ConfigForm(instance=config)
-        for field in config_form:
-            print 'field!'
-        context = {'config_form': config_form,
-                   'config_id': config.pk}
+
+        num_lanes = config.lane_set.count()
+        lane_counts = LaneCount.objects.all()
+        context = {
+            'config_form': config_form,
+            'config_id': config.pk,
+            'config_approved': True if config.approved_by is not None else False,
+            'num_lanes': int(num_lanes),
+            'lane_counts': lane_counts
+        }
         context.update(csrf(request))
         return render(request, 'seqConfig/config/config_edit.html', context)
 
 
 @login_required
 def config_approve(request, config_id):
-    pass
+    config = Config.objects.get(pk=config_id)
+    if config.approved_by is not None:
+        config.approved_by = None
+        config.approved_date = None
+    else:
+        config.approved_by = request.user
+        config.approved_date = datetime.now()
+    config.save()
+    return HttpResponseRedirect('/seqConfig/config/manage/')
 
 
 @login_required
@@ -212,13 +250,33 @@ def barcode_delete(request, barcode_id):
 
 
 def ajax_config_lane(request, num_lanes):
-    return render(request, 'seqConfig/ajax/config_lane.html', {'num_lanes': range(1, int(num_lanes) + 1)})
+    return render(request, 'seqConfig/ajax/config_lane_submit.html', {'num_lanes': range(1, int(num_lanes) + 1)})
 
 
 def ajax_config_library(request, start, stop, lane):
-    return render(request, 'seqConfig/ajax/config_library.html', {
+    return render(request, 'seqConfig/ajax/config_library_submit.html', {
         'lane': lane,
         'libs': range(int(start), int(stop) + 1),
         'submitters': Submitter.objects.all(),
         'barcodes': Barcode.objects.all()
     })
+
+def ajax_config_lane_edit(request, num_lanes, config_id):
+    lanes = Config.objects.get(pk=config_id).lane_set.all()
+    context = {
+        'num_lanes': range(1, int(num_lanes) + 1),
+        'lanes': enumerate(lanes)
+    }
+    return render(request, 'seqConfig/ajax/config_lane_edit.html', context)
+
+
+def ajax_config_library_edit(request, lane_id):
+    lane = Lane.objects.get(pk=lane_id)
+    context = {
+        'lane_num': lane.number,
+        'libs': enumerate(lane.library_set.all()),
+        'submitters': Submitter.objects.all(),
+        'barcodes': Barcode.objects.all()
+    }
+    return render(request, 'seqConfig/ajax/config_library_edit.html', context)
+

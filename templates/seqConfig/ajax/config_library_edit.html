@@ -1,0 +1,28 @@
+{% load staticfiles %}
+{% for lib_i, lib in libs %}
+<div class="row library-lane{% if not lib_i|add:'1'|divisibleby:2 %} even-library-lane{% endif %}" data-n="{{ lib_i|add:'1' }}">
+    <div class="col-sm-2">
+        <input type="text" class="form-control" placeholder="Library {{ lib_i|add:'1' }}" name="bionimbus_id__lane_{{ lane_num }}__lib_{{ lib_i|add:'1' }}" value="{{ lib.bionimbus_id }}"/>
+    </div>
+    <div class="col-sm-2 library-lane-vertical-center">(Project)</div>
+    <div class="col-sm-2">
+        <select class="form-control submitter-select" name="submitter__lane_{{ lane_num }}__lib_{{ lib_i|add:'1' }}">
+            {% for submitter in submitters %}
+            <option value="{{ submitter.pk }}"{% if lib.submitter.pk == submitter.pk %} selected{% endif %}>{{ submitter.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-sm-2">
+        <select class="form-control barcode-select" name="barcode__lane_{{ lane_num }}__lib_{{ lib_i|add:'1' }}">
+            {% for barcode in barcodes %}
+            <option value="{{ barcode.pk }}" data-barcodeseq="{{ barcode.sequence }}"{% if lib.barcode.pk == barcode.pk %} selected{% endif %}>{{ barcode.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-sm-2 library-lane-vertical-center" style="overflow-x:auto"></div>
+    <div class="col-sm-2">
+        <input type="text" class="form-control" name="cluster_station_concentration__lane_{{ lane_num }}__lib_{{ lib_i|add:'1' }}" value="{{ lib.cluster_station_concentration }}"/>
+    </div>
+</div>
+{% endfor %}
+<script src="{% static 'js/config/config_library.js' %}" async></script>

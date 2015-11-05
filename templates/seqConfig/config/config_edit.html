@@ -5,44 +5,77 @@
     <section class="seq-config-section">
         <div class="row seq-text-center">
             <h1 class="seq-config-header">Edit SeqConfig</h1>
+            <div class="col-sm-10 col-sm-offset-1">
+                <button type="button" class="btn btn-primary approve_btn" style="float:right;margin-right:12px"{% if config_approved %} data-clicked="0"{% endif %}>
+                    {% if config_approved %}
+                    <span class="fa fa-undo"></span>&nbsp;&nbsp;Unapprove SeqConfig
+                    {% else %}
+                    <span class="fa fa-check-circle"></span>&nbsp;&nbsp;Approve SeqConfig
+                    {% endif %}
+                </button>
+            </div>
         </div>
     </section>
     <section class="seq-config-section">
         <form action="/seqConfig/config/delete/{{ config_id }}/" method="post" id="config_delete_form">
             {% csrf_token %}
         </form>
+        <form action="/seqConfig/config/approve/{{ config_id }}/" method="post" id="config_approve_form">
+            {% csrf_token %}
+        </form>
         <form action="/seqConfig/config/edit/{{ config_id }}/" method="post" id="config_edit_form">
             {% csrf_token %}
             {% for field in config_form %}
             <div class="row" style="margin-bottom:15px">
-                <div class="col-sm-2 col-sm-offset-2">
+                <div class="col-sm-2 col-sm-offset-1">
                     {{ field.label_tag }}
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-8">
                     {{ field }}
                 </div>
             </div>
             {% endfor %}
+
+            <section class="seq-config-section">
+                <div class="row" style="margin-bottom:15px">
+                    <div class="col-sm-2 col-sm-offset-5">
+                        <label for="lane-count-select">Lane Count:</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <select id="lane-count-select" class="form-control" name="lane_count">
+                            {% for lane_count in lane_counts %}
+                            <option value="{{ lane_count.count }}"{% if lane_count.count == num_lanes %} selected{% endif %}>{{ lane_count.count }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div id="lanes-section" data-gotlanes="no"></div>
+            </section>
+
         </form>
     </section>
     <section class="seq-config-section">
         <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
+            <div class="col-sm-10 col-sm-offset-1">
                 <button type="button" id="submit_edit" class="btn btn-primary" style="float:right">
-                   <span class="fa fa-wrench"></span>&nbsp;&nbsp;
-                   Update
+                    <span class="fa fa-wrench"></span>&nbsp;&nbsp;
+                    Update
                 </button>
-                <button type="button" id="submit_edit" class="btn btn-primary" style="float:right;margin-right:12px">
-                   <span class="fa fa-check-circle"></span>&nbsp;&nbsp;
-                   Approve SeqConfig
+                <button type="button" class="btn btn-primary approve_btn" style="float:right;margin-right:12px"{% if config_approved %} data-clicked="0"{% endif %}>
+                    {% if config_approved %}
+                    <span class="fa fa-undo"></span>&nbsp;&nbsp;Unapprove SeqConfig
+                    {% else %}
+                    <span class="fa fa-check-circle"></span>&nbsp;&nbsp;Approve SeqConfig
+                    {% endif %}
                 </button>
                 <button type="button" id="submit_delete" class="btn btn-primary" data-clicked="0">
-                   <span class="fa fa-trash"></span>&nbsp;&nbsp;
-                   Trash it
+                    <span class="fa fa-trash"></span>&nbsp;&nbsp;
+                    Trash it
                 </button>
             </div>
         </div>
     </section>
 </div>
+<input type="hidden" id="config_id" value="{{ config_id }}"/>
 <script src="{% static 'js/config/config_edit.js' %}"></script>
 {% endblock %}

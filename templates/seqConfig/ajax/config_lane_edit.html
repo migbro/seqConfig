@@ -1,0 +1,44 @@
+{% load staticfiles %}
+<div class="row">
+    <div class="col-sm-10 col-sm-offset-1">
+        <div class="panel panel-primary with-nav-tabs">
+            <div class="panel-heading">
+                <ul class="nav nav-tabs">
+                    {% for lane in num_lanes %}
+                        <li{% if forloop.first %} class="active"{% endif %}>
+                            <a href="#lanetab{{ lane }}" data-toggle="tab">Lane {{ lane }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="panel-body">
+                <div class="tab-content">
+                    {% for i, lane in lanes %}
+                        <div class="tab-pane lanetab fade{% if forloop.first %} in active{% endif %}" id="lanetab{{ i|add:'1' }}" data-laneid="{{ lane.pk }}" data-lanenum="{{ lane.number }}" data-numlibs="{{ lane.library_set.count }}">
+                            <div class="row" style="margin-bottom:1.8em">
+                                <div class="col-sm-4">
+                                    <label for="num-libs{{ i|add:'1' }}" style="float:right">Number of Libraries:</label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="number" class="form-control num-libs" id="num-libs{{ i|add:'1' }}" value="{{ lane.library_set.count }}" data-libs-exist="0" data-lane="{{ i|add:'1' }}" min="1" name="num_libraries__lane_{{ i|add:'1' }}">
+                                </div>
+                            </div>
+                            <div class="row library-lane-header">
+                                <div class="col-sm-2">Library ID</div>
+                                <div class="col-sm-2">Project</div>
+                                <div class="col-sm-2">Submitter</div>
+                                <div class="col-sm-2">Barcode</div>
+                                <div class="col-sm-2">Barcode Sequence</div>
+                                <div class="col-sm-2">Cluster Station Concentration</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12" id="library-section{{ i|add:'1' }}"></div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/config/config_lane_edit.js' %}" async></script>
