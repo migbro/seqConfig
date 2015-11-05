@@ -55,7 +55,7 @@ label{
     margin-bottom: 1.3em;
 }
 .monospace{
-    font-family: 'Cousine', ;
+    font-family: 'Cousine', monospace ;
 }
 
 /* Panel Tabs */
