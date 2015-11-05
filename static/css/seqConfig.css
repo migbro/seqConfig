@@ -54,7 +54,9 @@ label{
     font-weight: bold;
     margin-bottom: 1.3em;
 }
-
+.monospace{
+    font-family: 'Cousine', ;
+}
 
 /* Panel Tabs */
 .panel.with-nav-tabs .panel-heading{
