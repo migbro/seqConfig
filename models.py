@@ -8,12 +8,14 @@ class Run(models.Model):
         SEQUENCING = 0
         PROCESSING = 1
         FINISHED = 2
+        COMPLETED = 3
 
     name = models.CharField(max_length=128, verbose_name='')
     status_choices = (
         (RunStatus.SEQUENCING, 'Sequencing'),
         (RunStatus.PROCESSING, 'Processing'),
-        (RunStatus.FINISHED, 'Finished')
+        (RunStatus.FINISHED, 'Finished'),
+        (RunStatus.COMPLETED, 'Completed')
     )
     status = models.SmallIntegerField(choices=status_choices,
                                       verbose_name='Run Status')

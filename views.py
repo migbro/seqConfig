@@ -42,7 +42,7 @@ def user_logout(request):
 @login_required
 def config_manage(request):
     configs = Config.objects.all()
-    context = {'configs': configs}
+    context = {'configs': reversed(configs)}
     return render(request, 'seqConfig/config/config_manage.html', context)
 
 
@@ -114,6 +114,8 @@ def config_get(request, run_name):
     :return: HttpResponse(json)
     """
     config = Config.objects.select_related().get(run_name__iexact=run_name)
+    if config.approved_by is None:
+        return HttpResponse('{}')
     lanes = config.lane_set.all()
     json_response = {'run_name': config.run_name, 'run_type': config.runtype.name,
                      'read1_cycles': config.read1_cycles, 'read2_cycles': config.read2_cycles,

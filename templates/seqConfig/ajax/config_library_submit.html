@@ -7,6 +7,7 @@
     <div class="col-sm-2 library-lane-vertical-center">(Project)</div>
     <div class="col-sm-2">
         <select class="form-control submitter-select" name="submitter__lane_{{ lane }}__lib_{{ lib }}">
+            <option value=""></option>
             {% for submitter in submitters %}
             <option value="{{ submitter.pk }}">{{ submitter.name }}</option>
             {% endfor %}
@@ -14,6 +15,7 @@
     </div>
     <div class="col-sm-2">
         <select class="form-control barcode-select" name="barcode__lane_{{ lane }}__lib_{{ lib }}">
+            <option value=""></option>
             {% for barcode in barcodes %}
             <option value="{{ barcode.pk }}" data-barcodeseq="{{ barcode.sequence }}">{{ barcode.name }}</option>
             {% endfor %}
