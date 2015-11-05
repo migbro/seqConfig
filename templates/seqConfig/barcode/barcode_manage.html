@@ -19,8 +19,9 @@
                 <thead>
                     <tr>
                         <th class="col-xs-2">Barcode Number</th>
-                        <th class="col-xs-3">Name</th>
-                        <th class="col-xs-5">Sequence</th>
+                        <th class="col-xs-2">Name</th>
+                        <th class="col-xs-2">Length</th>
+                        <th class="col-xs-4">Sequence</th>
                         <th class="col-xs-2"></th>
                     </tr>
                 </thead>
@@ -29,6 +30,7 @@
                     <tr>
                         <td>{{ bc.pk }}</td>
                         <td>{{ bc.name }}</td>
+                        <td>{{ bc.sequence|length }}</td>
                         <td class="monospace" style="overflow-x: auto">{{ bc.sequence }}</td>
                         <td>
                             <a href="/seqConfig/barcode/edit/{{ bc.pk }}" class="seq-config-icon-link" title="Edit/Delete">
