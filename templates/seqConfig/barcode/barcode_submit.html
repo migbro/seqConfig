@@ -9,11 +9,11 @@
     </section>
     <section class="seq-config-section">
         <div class="row seq-text-center">
-            <h2 class="seq-config-header">Create Barcode</h2>
+            <h2 class="seq-config-header">Create a barcode</h2>
         </div>
     </section>
     <section class="seq-config-section">
-        <form action="/seqConfig/barcode/submit/" method="post">
+        <form id="single" action="/seqConfig/barcode/submit/" method="post">
             {% csrf_token %}
             {% for field in barcode_form %}
             <div class="row" style="margin-bottom:15px">
@@ -28,40 +28,36 @@
             <section class="seq-config-section">
                 <div class="row">
                     <div class="col-sm-10">
-                       <button type="submit" class="btn btn-primary" style="float:right">
-                           <span class="fa fa-cogs"></span>&nbsp;&nbsp;
-                           Submit
+                        <button type="submit" class="btn btn-primary" style="float:right">
+                            <span class="fa fa-cogs"></span>&nbsp;&nbsp;
+                            Submit
                         </button>
                     </div>
                 </div>
             </section>
-
         </form>
-    </section>
-    <section class="seq-config-section">
-        <div class="row seq-text-center">
-            <h2 class="seq-config-header">Create all the barcodes!</h2>
-        </div>
-    </section>
-    <section class="seq-config-section">
-        <form action="/seqConfig/barcode/submit/" method="post">
+        <form id="multi" action="/seqConfig/barcode/upload/" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="row" style="margin-bottom:15px">
-                <div class="col-sm-2 col-sm-offset-2">
-                    Upload text file:
-                </div>
-                <div class="col-sm-6">
-                    Placeholder
-                </div>
-            </div>
             <section class="seq-config-section">
-                <div class="row">
-                    <div class="col-sm-10">
-                       <button type="submit" class="btn btn-primary" style="float:right">
-                           <span class="fa fa-cogs"></span>&nbsp;&nbsp;
-                           Submit
-                        </button>
-                    </div>
+                <div class="row seq-text-center">
+                    <h2 class="seq-config-header">Create all the barcodes!</h2>
+                </div>
+                <br>
+                <br>
+
+                <div class="col-sm-2 col-sm-offset-2">
+                    <label for="id_barcode_file">Format: tab-separated text file, one barcode name and sequence pair per
+                        line
+                    </label>
+                </div>
+                <div class="col-sm-4">
+                    <input class="form-control" id="id_barcode_file" name="barcode_file" type="file">
+                </div>
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary" style="float:right">
+                        <span class="fa fa-cloud-upload"></span>&nbsp;&nbsp;
+                        Upload
+                    </button>
                 </div>
             </section>
 

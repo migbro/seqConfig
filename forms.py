@@ -1,8 +1,8 @@
 __author__ = 'Dominic Fitzgerald'
 
 from django import forms
-from models import Config
 from models import Barcode
+from models import Config
 
 
 class ConfigForm(forms.ModelForm):

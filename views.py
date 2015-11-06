@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -8,7 +9,6 @@ from django.shortcuts import render
 from forms import BarcodeForm
 from forms import ConfigForm
 from models import *
-from datetime import datetime
 
 
 def user_login(request):
@@ -213,11 +213,13 @@ def barcode_manage(request):
 @login_required
 def barcode_submit(request):
     if request.method == 'POST':
+        print request.POST
         barcode_form = BarcodeForm(request.POST, instance=Barcode())
         if barcode_form.is_valid():
             new_barcode = barcode_form.save(commit=False)
             new_barcode.created_by = request.user
             new_barcode.save()
+
         return HttpResponseRedirect('/seqConfig/barcode/manage/')
     else:
         barcode_form = BarcodeForm(instance=Barcode())
@@ -226,6 +228,14 @@ def barcode_submit(request):
         }
         context.update(csrf(request))
         return render(request, 'seqConfig/barcode/barcode_submit.html', context)
+
+
+@login_required
+def barcode_upload(request):
+    print 'got request'
+    print str(request.FILES['barcode_file'])
+    Barcode.load_into_db(request.FILES['barcode_file'])
+    return HttpResponseRedirect('/seqConfig/barcode/manage/')
 
 
 @login_required
@@ -263,6 +273,7 @@ def ajax_config_library(request, start, stop, lane):
         'barcodes': Barcode.objects.all()
     })
 
+
 def ajax_config_lane_edit(request, num_lanes, config_id):
     lanes = Config.objects.get(pk=config_id).lane_set.all()
     context = {
@@ -281,4 +292,3 @@ def ajax_config_library_edit(request, lane_id):
         'barcodes': Barcode.objects.all()
     }
     return render(request, 'seqConfig/ajax/config_library_edit.html', context)
-

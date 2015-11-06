@@ -1,6 +1,7 @@
-from django.db import models
-from django.contrib.auth.models import User
 import django.utils.timezone
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.db import models
 
 
 class Run(models.Model):
@@ -24,6 +25,47 @@ class Run(models.Model):
 class Barcode(models.Model):
     name = models.CharField(max_length=64, verbose_name='Barcode name')
     sequence = models.CharField(max_length=64, verbose_name='Barcode sequence')
+
+    @classmethod
+    def get_media_path(cls):
+        """
+        The path to /viewer/files is different in DEBUG vs Non-DEBUG
+        :return:
+        """
+        if settings.DEBUG:
+            media_path = settings.MEDIA_ROOT
+        else:
+            media_path = settings.MEDIA_URL
+        print "settings.DEBUG is {}, set media_path to: {}".format(settings.DEBUG,
+                                                                   media_path)
+        return media_path
+    @classmethod
+    def create_file(cls, bc_fn, bc_mem):
+        new = open(str(bc_fn), 'wb+')
+        for chunk in bc_mem:
+            new.write(chunk)
+        new.close()
+
+    @classmethod
+    def load_into_db(cls, bc_mem):
+        media_path = cls.get_media_path()
+        bc_fn = media_path + '/' + str(bc_mem)
+        print 'Request received, creating file' + bc_fn
+        cls.create_file(bc_fn, bc_mem)
+        print 'Opening file'
+        fh = open(bc_fn, 'r')
+        all_barcodes = []
+        for line in fh:
+            line = line.rstrip('\n')
+            info = line.split('\t')
+            barcode = Barcode()
+            barcode.name = info[0]
+            barcode.sequence = info[1]
+            all_barcodes.append(barcode)
+        fh.close()
+        print 'File processed, saving'
+        Barcode.objects.bulk_create(all_barcodes)
+        return True
 
     def __str__(self):
         return '{}:{}'.format(self.name, self.sequence)
@@ -98,6 +140,7 @@ class LaneCount(models.Model):
 
     def __str__(self):
         return '{}: {}'.format(self.name, self.count)
+
 
 class Results(models.Model):
     run = models.ForeignKey(Run)
