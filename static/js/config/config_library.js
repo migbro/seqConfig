@@ -3,11 +3,13 @@
  */
 $(document).ready(function(){
     $('.submitter-select').select2({
-        minimumResultsForSearch: 10
+        minimumResultsForSearch: 10,
+        placeholder: 'Select Submitter'
     });
 
     $('.barcode-select').select2({
-        minimumResultsForSearch: 10
+        minimumResultsForSearch: 10,
+        placeholder: 'Select Barcode'
     }).change(function(){
         var barcodeSeq = $(this).find('option:selected').data('barcodeseq');
         var $barcodeSeqCol = $(this).parent().next().first();

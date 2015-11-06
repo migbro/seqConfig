@@ -6,11 +6,7 @@
     </div>
     <div class="col-sm-2 library-lane-vertical-center">(Project)</div>
     <div class="col-sm-2">
-        <select class="form-control submitter-select" name="submitter__lane_{{ lane_num }}__lib_{{ lib_i|add:'1' }}">
-            {% for submitter in submitters %}
-            <option value="{{ submitter.pk }}"{% if lib.submitter.pk == submitter.pk %} selected{% endif %}>{{ submitter.name }}</option>
-            {% endfor %}
-        </select>
+        <input type="text" class="form-control" placeholder="Submitter" name="submitter__lane_{{ lane_num }}__lib_{{ lib_i|add:'1' }}" value="{{ lib.submitter }}"/>
     </div>
     <div class="col-sm-2">
         <select class="form-control barcode-select" name="barcode__lane_{{ lane_num }}__lib_{{ lib_i|add:'1' }}">

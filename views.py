@@ -66,12 +66,11 @@ def config_submit(request):
                 num_libraries = request.POST.get('num_libraries__lane_' + str(lane))
                 for library in range(1, int(num_libraries) + 1):
                     library_tag = '__lane_{}__lib_{}'.format(lane, library)
-                    submitter = Submitter.objects.get(pk=int(request.POST.get('submitter' + library_tag)))
                     barcode = Barcode.objects.get(pk=request.POST.get('barcode' + library_tag))
                     new_library = Library(
                         lane=new_lane,
                         bionimbus_id=request.POST.get('bionimbus_id' + library_tag),
-                        submitter=submitter,
+                        submitter=request.POST.get('submitter' + library_tag),
                         barcode=barcode,
                         cluster_station_concentration=request.POST.get('cluster_station_concentration' + library_tag)
                     )
@@ -156,12 +155,11 @@ def config_edit(request, config_id):
                 num_libraries = request.POST.get('num_libraries__lane_' + str(lane))
                 for library in range(1, int(num_libraries) + 1):
                     library_tag = '__lane_{}__lib_{}'.format(lane, library)
-                    submitter = Submitter.objects.get(pk=int(request.POST.get('submitter' + library_tag)))
                     barcode = Barcode.objects.get(pk=request.POST.get('barcode' + library_tag))
                     new_library = Library(
                         lane=new_lane,
                         bionimbus_id=request.POST.get('bionimbus_id' + library_tag),
-                        submitter=submitter,
+                        submitter=request.POST.get('submitter' + library_tag),
                         barcode=barcode,
                         cluster_station_concentration=request.POST.get('cluster_station_concentration' + library_tag)
                     )
@@ -269,7 +267,6 @@ def ajax_config_library(request, start, stop, lane):
     return render(request, 'seqConfig/ajax/config_library_submit.html', {
         'lane': lane,
         'libs': range(int(start), int(stop) + 1),
-        'submitters': Submitter.objects.all(),
         'barcodes': Barcode.objects.all()
     })
 
@@ -288,7 +285,6 @@ def ajax_config_library_edit(request, lane_id):
     context = {
         'lane_num': lane.number,
         'libs': enumerate(lane.library_set.all()),
-        'submitters': Submitter.objects.all(),
         'barcodes': Barcode.objects.all()
     }
     return render(request, 'seqConfig/ajax/config_library_edit.html', context)

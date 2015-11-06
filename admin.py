@@ -1,15 +1,11 @@
 from django.contrib import admin
 
-from models import Barcode, RunType, Lane, Library, Config, LaneCount, Submitter
+from models import Barcode, RunType, Lane, Library, Config, LaneCount
 
 
 class BarcodeAdmin(admin.ModelAdmin):
     model = Barcode
     list_display = ('name', 'sequence')
-
-
-class SubmitterAdmin(admin.ModelAdmin):
-    model = Submitter
 
 
 class RunTypeAdmin(admin.ModelAdmin):
@@ -41,4 +37,3 @@ admin.site.register(Lane, LaneAdmin)
 admin.site.register(Library, LibraryAdmin)
 admin.site.register(Config, ConfigAdmin)
 admin.site.register(LaneCount, LaneCountAdmin)
-admin.site.register(Submitter, SubmitterAdmin)
