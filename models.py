@@ -99,6 +99,7 @@ class Config(models.Model):
                                          blank=True, null=True, default=None)
     run = models.ForeignKey('Run', null=True, blank=True, default=None,
                             verbose_name='Config Run')
+    # Add description
 
     def __str__(self):
         return '{}'.format(self.pk)
@@ -114,11 +115,11 @@ class Lane(models.Model):
 
 class Library(models.Model):
     lane = models.ForeignKey(Lane, verbose_name='Library Lane')
-    bionimbus_id = models.CharField(max_length=16, verbose_name='Library Bionimbus ID')
-    submitter = models.CharField(max_length=128, verbose_name='Library Submitter')
-    barcode = models.ForeignKey(Barcode, verbose_name='Library Barcode')
+    bionimbus_id = models.CharField(max_length=16, verbose_name='Library Bionimbus ID', null=True, blank=True)
+    submitter = models.CharField(max_length=128, verbose_name='Library Submitter', null=True, blank=True)
+    barcode = models.ForeignKey(Barcode, verbose_name='Library Barcode', null=True, blank=True)
     cluster_station_concentration = models.FloatField(
-        verbose_name='Library Cluster Station Concentration')
+        verbose_name='Library Cluster Station Concentration', null=True, blank=True)
 
     def __str__(self):
         return self.bionimbus_id

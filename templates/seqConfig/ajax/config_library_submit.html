@@ -9,7 +9,7 @@
         <input type="text" class="form-control" placeholder="Submitter" name="submitter__lane_{{ lane }}__lib_{{ lib }}"/>
     </div>
     <div class="col-sm-2">
-        <select class="form-control barcode-select" name="barcode__lane_{{ lane }}__lib_{{ lib }}">
+        <select class="form-control barcode-select" name="barcode__lane_{{ lane }}__lib_{{ lib }}" data-lane="{{ lane }}">
             <option value=""></option>
             {% for barcode in barcodes %}
             <option value="{{ barcode.pk }}" data-barcodeseq="{{ barcode.sequence }}">{{ barcode.name }}</option>
