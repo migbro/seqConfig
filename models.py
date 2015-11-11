@@ -90,6 +90,7 @@ class Config(models.Model):
                                          blank=True, null=True)
     run_name = models.CharField(max_length=64, verbose_name='Run Folder ID',
                                 blank=True, null=True)
+    description = models.TextField(verbose_name='Config Description', null=True, blank=True)
     created_by = models.ForeignKey(User, verbose_name='Config User Created By',
                                    related_name='created_by_user')
     approved_by = models.ForeignKey(User, verbose_name='Config User Approved By',
@@ -99,7 +100,6 @@ class Config(models.Model):
                                          blank=True, null=True, default=None)
     run = models.ForeignKey('Run', null=True, blank=True, default=None,
                             verbose_name='Config Run')
-    # Add description
 
     def __str__(self):
         return '{}'.format(self.pk)
