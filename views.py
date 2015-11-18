@@ -213,12 +213,23 @@ def barcode_submit(request):
     if request.method == 'POST':
         print request.POST
         barcode_form = BarcodeForm(request.POST, instance=Barcode())
+        new_barcodes = []
+        existing_barcodes = []
+        req = Barcode()
+        req.name = request.POST['name']
+        req.sequence = request.POST['sequence']
         if barcode_form.is_valid():
-            new_barcode = barcode_form.save(commit=False)
-            new_barcode.created_by = request.user
-            new_barcode.save()
+            try:
+                Barcode.objects.get(sequence=request.POST['sequence'])
+                existing_barcodes.append(req)
+            except:
+                new_barcodes.append(req)
+                new_barcode = barcode_form.save(commit=False)
+                new_barcode.created_by = request.user
+                new_barcode.save()
 
-        return HttpResponseRedirect('/seqConfig/barcode/manage/')
+        context = barcode_status(request, new_barcodes, existing_barcodes)
+        return render(request, 'seqConfig/barcode/barcode_status.html', context)
     else:
         barcode_form = BarcodeForm(instance=Barcode())
         context = {
@@ -229,11 +240,29 @@ def barcode_submit(request):
 
 
 @login_required
+def barcode_status(request, new_barcodes, existing_barcodes):
+    if request.method == 'POST':
+        added = len(new_barcodes)
+        ignored = len(existing_barcodes)
+        total = added + ignored
+        repeats = 'None'
+        if ignored:
+            temp = []
+            for bc in existing_barcodes:
+                temp.append(bc.name + ':' + bc.sequence)
+            repeats = ', '.join(temp)
+        print repeats
+        context = {'total': total, 'added': added, 'ignored': ignored, 'exists': repeats}
+        context.update(csrf(request))
+        return context
+
+
+@login_required
 def barcode_upload(request):
-    print 'got request'
     print str(request.FILES['barcode_file'])
-    Barcode.load_into_db(request.FILES['barcode_file'])
-    return HttpResponseRedirect('/seqConfig/barcode/manage/')
+    (new_barcodes, existing_barcodes) = Barcode.load_into_db(request.FILES['barcode_file'])
+    context = barcode_status(request, new_barcodes, existing_barcodes)
+    return render(request, 'seqConfig/barcode/barcode_status.html', context)
 
 
 @login_required

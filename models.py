@@ -39,6 +39,7 @@ class Barcode(models.Model):
         print "settings.DEBUG is {}, set media_path to: {}".format(settings.DEBUG,
                                                                    media_path)
         return media_path
+
     @classmethod
     def create_file(cls, bc_fn, bc_mem):
         new = open(str(bc_fn), 'wb+')
@@ -50,22 +51,24 @@ class Barcode(models.Model):
     def load_into_db(cls, bc_mem):
         media_path = cls.get_media_path()
         bc_fn = media_path + '/' + str(bc_mem)
-        print 'Request received, creating file' + bc_fn
         cls.create_file(bc_fn, bc_mem)
-        print 'Opening file'
         fh = open(bc_fn, 'r')
-        all_barcodes = []
+        new_barcodes = []
+        existing_barcodes = []
         for line in fh:
             line = line.rstrip('\n')
             info = line.split('\t')
             barcode = Barcode()
             barcode.name = info[0]
             barcode.sequence = info[1]
-            all_barcodes.append(barcode)
+            try:
+                Barcode.objects.get(sequence=info[1])
+                existing_barcodes.append(barcode)
+            except:
+                new_barcodes.append(barcode)
         fh.close()
-        print 'File processed, saving'
-        Barcode.objects.bulk_create(all_barcodes)
-        return True
+        Barcode.objects.bulk_create(new_barcodes)
+        return new_barcodes, existing_barcodes
 
     def __str__(self):
         return '{}:{}'.format(self.name, self.sequence)

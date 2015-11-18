@@ -1,0 +1,32 @@
+{% extends 'seqConfig/base.html' %}
+{% block content %}
+<div class="container">
+    <section class="seq-config-section">
+        <div class="row seq-text-center">
+            <h1 class="seq-config-header">Barcode Upload Results</h1>
+        </div>
+    </section>
+    <section class="seq-config-section">
+        <div class="row">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="col-xs-2"># Requested to add</th>
+                        <th class="col-xs-2"># Successfully added</th>
+                        <th class="col-xs-2"># Existing ignored</th>
+                        <th class="col-xs-6">Barcodes ignored for upload</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ total }}</td>
+                        <td>{{ added }}</td>
+                        <td>{{ ignored }}</td>
+                        <td>{{ exists }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+{% endblock %}

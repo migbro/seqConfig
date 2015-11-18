@@ -20,6 +20,7 @@ urlpatterns = patterns('',
                        url(r'^barcode/manage/$', views.barcode_manage, name='barcode manage'),
                        url(r'^barcode/submit/$', views.barcode_submit, name='barcode submit'),
                        url(r'^barcode/upload/$', views.barcode_upload, name='barcode upload'),
+                       url(r'^barcode/status/$', views.barcode_status, name='barcode status'),
                        url(r'^barcode/delete/(?P<barcode_id>\d+)/$', views.barcode_delete, name='barcode delete'),
                        url(r'^barcode/edit/(?P<barcode_id>\d+)/$', views.barcode_edit, name='barcode edit'),
 
