@@ -66,13 +66,26 @@ def config_submit(request):
                 num_libraries = request.POST.get('num_libraries__lane_' + str(lane))
                 for library in range(1, int(num_libraries) + 1):
                     library_tag = '__lane_{}__lib_{}'.format(lane, library)
-                    barcode = Barcode.objects.get(pk=request.POST.get('barcode' + library_tag))
+
+                    # If no Barcode is provided, make NULL in database
+                    barcode_id = request.POST.get('barcode' + library_tag)
+                    if barcode_id != '':
+                        barcode = Barcode.objects.get(pk=barcode_id)
+                    else:
+                        barcode = None
+
+                    # If no cluster_station_concentration is provided, store 0.0 in database
+                    cluster_station_concentration = request.POST.get('cluster_station_concentration' + library_tag)
+                    if cluster_station_concentration == '':
+                        cluster_station_concentration = 0.0
+
+                    # Create the new library model, hooked up to the newly created lane_model
                     new_library = Library(
                         lane=new_lane,
                         bionimbus_id=request.POST.get('bionimbus_id' + library_tag),
                         submitter=request.POST.get('submitter' + library_tag),
                         barcode=barcode,
-                        cluster_station_concentration=request.POST.get('cluster_station_concentration' + library_tag)
+                        cluster_station_concentration=cluster_station_concentration
                     )
                     new_library.save()
         return HttpResponseRedirect('/seqConfig/config/manage/')
@@ -155,13 +168,25 @@ def config_edit(request, config_id):
                 num_libraries = request.POST.get('num_libraries__lane_' + str(lane))
                 for library in range(1, int(num_libraries) + 1):
                     library_tag = '__lane_{}__lib_{}'.format(lane, library)
-                    barcode = Barcode.objects.get(pk=request.POST.get('barcode' + library_tag))
+
+                    # If no Barcode is provided, make NULL in database
+                    barcode_id = request.POST.get('barcode' + library_tag)
+                    if barcode_id != '':
+                        barcode = Barcode.objects.get(pk=barcode_id)
+                    else:
+                        barcode = None
+
+                    # If no cluster_station_concentration is provided, store 0.0 in database
+                    cluster_station_concentration = request.POST.get('cluster_station_concentration' + library_tag)
+                    if cluster_station_concentration == '':
+                        cluster_station_concentration = 0.0
+
                     new_library = Library(
                         lane=new_lane,
                         bionimbus_id=request.POST.get('bionimbus_id' + library_tag),
                         submitter=request.POST.get('submitter' + library_tag),
                         barcode=barcode,
-                        cluster_station_concentration=request.POST.get('cluster_station_concentration' + library_tag)
+                        cluster_station_concentration=cluster_station_concentration
                     )
                     new_library.save()
         return HttpResponseRedirect('/seqConfig/config/manage/')

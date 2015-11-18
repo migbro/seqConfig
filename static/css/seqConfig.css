@@ -8,7 +8,7 @@ a:hover{
     color: #8B2702;
 }
 a:visited{
-    color: #8B2702;
+    color: #bf3604;
 }
 
 .seq-config-section{
@@ -25,6 +25,13 @@ a.seq-config-icon-link{
 
 .seq-config-icon{
     color: #bf3604;
+}
+.seq-config-pointer{
+    cursor: pointer;
+}
+.seq-config-config-description{
+    background-color: #f2f2f2;
+    display: none;
 }
 
 .seq-config-header{

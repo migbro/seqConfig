@@ -16,7 +16,7 @@ class ConfigForm(forms.ModelForm):
     class Meta:
         model = Config
         fields = ['runtype', 'read1_cycles', 'read2_cycles', 'barcode_cycles',
-                  'run_name']
+                  'run_name', 'description']
 
 
 class BarcodeForm(forms.ModelForm):
