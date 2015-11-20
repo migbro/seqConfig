@@ -138,10 +138,7 @@ def config_get(request, run_name):
         related = Library.objects.select_related().filter(lane=lane.pk)
         json_response['Lanes'][lane.number] = {}
         for cur in related:
-            json_response['Lanes'][lane.number][cur.bionimbus_id] = {'submitter': cur.submitter.name,
-                                                                     'barcode_name': cur.barcode.name,
-                                                                     'barcode_seq': cur.barcode.sequence}
-            json_response['Lanes'][lane.number][cur.bionimbus_id] = {'submitter': cur.submitter.name,
+            json_response['Lanes'][lane.number][cur.bionimbus_id] = {'submitter': cur.submitter,
                                                                      'barcode_name': cur.barcode.name,
                                                                      'barcode_seq': cur.barcode.sequence}
     pretty = json.dumps(json_response, sort_keys=True, indent=4)
