@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.context_processors import csrf
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 from forms import BarcodeForm
 from forms import ConfigForm
 from models import *
@@ -145,6 +146,30 @@ def config_get(request, run_name):
     return HttpResponse(pretty)
 
 
+@csrf_exempt
+def post_demultiplex_file(request, run_name):
+    """
+    post summary html data, replacing any existing for the provided run
+    :param request:
+    :param run_name:
+    :return:
+    """
+    if request.method == 'POST':
+        print "run: {}\nrequest: {}".format(run_name, request)
+        demux_json = json.loads(request.body)  # {"html": "<html-data>"}
+        print "request.body: {}".format(demux_json)
+        # access the run object by name
+        config = Config.objects.get(run_name=run_name)
+        print "{} {},{},{}".format(config.run_name, config.read1_cycles,
+                                   config.barcode_cycles, config.read2_cycles)
+        config.summary = demux_json['html']
+        config.save()
+        response_json = {"response": "Success!"}
+        return HttpResponse(json.dumps(response_json))
+    else:
+        return HttpResponse(json.dumps({"response": "Failed!"}))
+
+
 @login_required
 def config_edit(request, config_id):
     config = Config.objects.get(pk=config_id)
@@ -197,7 +222,8 @@ def config_edit(request, config_id):
             'config_id': config.pk,
             'config_approved': True if config.approved_by is not None else False,
             'num_lanes': int(num_lanes),
-            'lane_counts': lane_counts
+            'lane_counts': lane_counts,
+            'run_summary': config.summary
         }
         context.update(csrf(request))
         return render(request, 'seqConfig/config/config_edit.html', context)

@@ -17,6 +17,9 @@ urlpatterns = patterns('',
                        url(r'^config/delete/(?P<config_id>\d+)/$', views.config_delete, name='config delete'),
                        url(r'^config/get/(?P<run_name>\S+)/$', views.config_get, name='config_get'),
 
+                       url(r'^run/demultiplex_file/post/(?P<run_name>\S+)/$',
+                           views.post_demultiplex_file, name='post_demultiplex'),
+
                        url(r'^barcode/manage/$', views.barcode_manage, name='barcode manage'),
                        url(r'^barcode/submit/$', views.barcode_submit, name='barcode submit'),
                        url(r'^barcode/upload/$', views.barcode_upload, name='barcode upload'),

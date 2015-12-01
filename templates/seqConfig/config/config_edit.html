@@ -75,6 +75,11 @@
             </div>
         </div>
     </section>
+    <section class="seq-config-section" name="run_summary">
+        <div class="container run_summary_html">
+            {{ run_summary|safe }}
+        </div>
+    </section>
 </div>
 <input type="hidden" id="config_id" value="{{ config_id }}"/>
 <script src="{% static 'js/config/config_edit.js' %}"></script>

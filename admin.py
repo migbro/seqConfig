@@ -28,7 +28,7 @@ class LibraryAdmin(admin.ModelAdmin):
 class ConfigAdmin(admin.ModelAdmin):
     model = Config
     list_display = ('pk', 'creation_date', 'runtype', 'read1_cycles',
-                    'read2_cycles', 'barcode_cycles', 'run_name')
+                    'read2_cycles', 'barcode_cycles', 'run_name', 'status')
 
 
 admin.site.register(Barcode, BarcodeAdmin)

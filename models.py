@@ -4,24 +4,6 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-class Run(models.Model):
-    class RunStatus:
-        SEQUENCING = 0
-        PROCESSING = 1
-        FINISHED = 2
-        COMPLETED = 3
-
-    name = models.CharField(max_length=128, verbose_name='')
-    status_choices = (
-        (RunStatus.SEQUENCING, 'Sequencing'),
-        (RunStatus.PROCESSING, 'Processing'),
-        (RunStatus.FINISHED, 'Finished'),
-        (RunStatus.COMPLETED, 'Completed')
-    )
-    status = models.SmallIntegerField(choices=status_choices,
-                                      verbose_name='Run Status')
-
-
 class Barcode(models.Model):
     name = models.CharField(max_length=64, verbose_name='Barcode name')
     sequence = models.CharField(max_length=64, verbose_name='Barcode sequence')
@@ -101,8 +83,27 @@ class Config(models.Model):
                                     null=True, default=None)
     approved_date = models.DateTimeField(verbose_name='Config Approved By Datetime',
                                          blank=True, null=True, default=None)
-    run = models.ForeignKey('Run', null=True, blank=True, default=None,
-                            verbose_name='Config Run')
+    summary = models.TextField(default='', verbose_name='Run Summary')
+
+    class RunStatus:
+        CREATED = 0
+        APPROVED = 1
+        SEQUENCING = 2
+        PROCESSING = 3
+        PROCESSED = 4
+        COMPLETED = 5
+
+    status_choices = (
+        (RunStatus.CREATED, 'Created'),
+        (RunStatus.APPROVED, 'Approved'),
+        (RunStatus.SEQUENCING, 'Sequencing'),
+        (RunStatus.PROCESSING, 'Processing'),
+        (RunStatus.PROCESSED, 'Finished'),
+        (RunStatus.COMPLETED, 'Completed')
+    )
+    status = models.SmallIntegerField(choices=status_choices,
+                                      verbose_name='Run Status',
+                                      default=RunStatus.CREATED)
 
     def __str__(self):
         return '{}'.format(self.pk)
@@ -137,7 +138,3 @@ class LaneCount(models.Model):
 
     def __str__(self):
         return '{}: {}'.format(self.name, self.count)
-
-
-class Results(models.Model):
-    run = models.ForeignKey(Run)
