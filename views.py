@@ -11,6 +11,8 @@ from forms import BarcodeForm
 from forms import ConfigForm
 from models import *
 
+from util import summary_parser
+
 
 def user_login(request):
     if request.method == 'POST':
@@ -130,8 +132,10 @@ def config_get(request, run_name):
     if config.approved_by is None:
         return HttpResponse('{}')
     lanes = config.lane_set.all()
-    json_response = {'run_name': config.run_name, 'run_type': config.runtype.name,
-                     'read1_cycles': config.read1_cycles, 'read2_cycles': config.read2_cycles,
+    json_response = {'run_name': config.run_name,
+                     'run_type': config.runtype.name,
+                     'read1_cycles': config.read1_cycles,
+                     'read2_cycles': config.read2_cycles,
                      'barcode_cycles': config.barcode_cycles}
     json_response['Lanes'] = {}
 
@@ -139,9 +143,11 @@ def config_get(request, run_name):
         related = Library.objects.select_related().filter(lane=lane.pk)
         json_response['Lanes'][lane.number] = {}
         for cur in related:
-            json_response['Lanes'][lane.number][cur.bionimbus_id] = {'submitter': cur.submitter,
-                                                                     'barcode_name': cur.barcode.name,
-                                                                     'barcode_seq': cur.barcode.sequence}
+            json_response['Lanes'][lane.number][cur.bionimbus_id] = {
+                'submitter': cur.submitter,
+                'barcode_name': cur.barcode.name,
+                'barcode_seq': cur.barcode.sequence
+            }
     pretty = json.dumps(json_response, sort_keys=True, indent=4)
     return HttpResponse(pretty)
 
@@ -163,6 +169,7 @@ def post_demultiplex_file(request, run_name):
         print "{} {},{},{}".format(config.run_name, config.read1_cycles,
                                    config.barcode_cycles, config.read2_cycles)
         config.summary = demux_json['html']
+        config.status = Config.RunStatus.PROCESSED
         config.save()
         response_json = {"response": "Success!"}
         return HttpResponse(json.dumps(response_json))
@@ -217,13 +224,19 @@ def config_edit(request, config_id):
 
         num_lanes = config.lane_set.count()
         lane_counts = LaneCount.objects.all()
+        if config.status == Config.RunStatus.PROCESSED:
+            summary_html = summary_parser.htmlify_summary(config.summary)
+        else:
+            summary_html = config.summary
+
         context = {
             'config_form': config_form,
             'config_id': config.pk,
             'config_approved': True if config.approved_by is not None else False,
             'num_lanes': int(num_lanes),
             'lane_counts': lane_counts,
-            'run_summary': config.summary
+            'run_status': config.status,
+            'run_summary': summary_html
         }
         context.update(csrf(request))
         return render(request, 'seqConfig/config/config_edit.html', context)

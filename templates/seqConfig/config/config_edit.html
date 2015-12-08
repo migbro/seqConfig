@@ -75,8 +75,16 @@
             </div>
         </div>
     </section>
-    <section class="seq-config-section" name="run_summary">
-        <div class="container run_summary_html">
+    <section class="seq-config-section" id="run_summary_section">
+        <div class="row">
+            <h1><u>Results:</u></h1>
+            {% if run_status == 4 %}
+                <button type="button" id="release_data" class="btn btn-primary">
+                    <span class="fa fa-check-circle"></span>&nbsp;&nbsp;Release Selected Data
+                </button>
+            {% endif %}
+        </div>
+        <div class="container run_summary_html" id="run_summary">
             {{ run_summary|safe }}
         </div>
     </section>

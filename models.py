@@ -83,7 +83,7 @@ class Config(models.Model):
                                     null=True, default=None)
     approved_date = models.DateTimeField(verbose_name='Config Approved By Datetime',
                                          blank=True, null=True, default=None)
-    summary = models.TextField(default='', verbose_name='Run Summary')
+    summary = models.TextField(blank=True, null=True, verbose_name='Run Summary')
 
     class RunStatus:
         CREATED = 0
@@ -98,7 +98,7 @@ class Config(models.Model):
         (RunStatus.APPROVED, 'Approved'),
         (RunStatus.SEQUENCING, 'Sequencing'),
         (RunStatus.PROCESSING, 'Processing'),
-        (RunStatus.PROCESSED, 'Finished'),
+        (RunStatus.PROCESSED, 'Processed'),
         (RunStatus.COMPLETED, 'Completed')
     )
     status = models.SmallIntegerField(choices=status_choices,
@@ -124,6 +124,20 @@ class Library(models.Model):
     barcode = models.ForeignKey(Barcode, verbose_name='Library Barcode', null=True, blank=True)
     cluster_station_concentration = models.FloatField(
         verbose_name='Library Cluster Station Concentration', null=True, blank=True)
+
+    class ReleaseStatus:
+        NA = 0
+        NO = 1
+        YES = 2
+
+    release_choices = (
+        (ReleaseStatus.NA, 'NA'),
+        (ReleaseStatus.NO, 'NO'),
+        (ReleaseStatus.YES, 'YES')
+    )
+    release = models.SmallIntegerField(choices=release_choices,
+                                       verbose_name='Release status',
+                                       default=ReleaseStatus.NA)
 
     def __str__(self):
         return self.bionimbus_id
