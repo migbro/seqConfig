@@ -37,4 +37,6 @@ urlpatterns = patterns('',
                        url(r'^ajax/config/library_edit/(?P<lane_id>\d+)/$',
                            views.ajax_config_library_edit,
                            name='ajax_config_library'),
+                       url(r'^ajax/bionimbus/project_by_bid/(?P<bionimbus_id>\d+-\d+)/$',
+                           views.ajax_bionimbus_project_by_id, name='ajax_bionimbus_project_by_id'),
                        ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

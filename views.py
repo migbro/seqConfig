@@ -1,12 +1,18 @@
 import json
 from datetime import datetime
 
+#from django.conf import settings
+import sys
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.context_processors import csrf
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from sqlalchemy.exc import OperationalError
+from sqlalchemy import create_engine
+from sqlalchemy.sql import text
+
 from forms import BarcodeForm
 from forms import ConfigForm
 from models import *
@@ -378,3 +384,23 @@ def ajax_config_library_edit(request, lane_id):
         'barcodes': Barcode.objects.all()
     }
     return render(request, 'seqConfig/ajax/config_library_edit.html', context)
+
+
+def ajax_bionimbus_project_by_id(request, bionimbus_id):
+    try:
+        eng = create_engine(settings.BIONIMBUS_PSQL_DB)
+        con = eng.connect()
+    except OperationalError, oe:
+        print >>sys.stderr, oe
+        return HttpResponse(json.dumps({bionimbus_id: "No DB conn"}))
+
+    query = '''select t_project.f_name from t_project, t_experiment_unit where
+    t_experiment_unit.f_bionimbus_id = '{}' and
+    t_project.id = t_experiment_unit.f_project'''
+
+    try:
+        rs = con.execute(text(query.format(bionimbus_id)))
+        project_name = rs.fetchone()[0]
+    except TypeError, te:
+        project_name = 'Not Found'
+    return HttpResponse(json.dumps({bionimbus_id: project_name}))
