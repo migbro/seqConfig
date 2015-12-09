@@ -24,6 +24,9 @@ urlpatterns = patterns('',
                        url(r'^run/set_run_status/(?P<run_name>\S+)/(?P<status>\d+)/$',
                            views.set_run_status, name='set_run_status'),
 
+                       url(r'^run/get_library_status/(?P<run_name>\S+)/(?P<lane_number>\d+)/(?P<bionimbus_id>\d+-\d+)/$',
+                           views.get_library_status, name='get_library_status'),
+
                        url(r'^barcode/manage/$', views.barcode_manage, name='barcode manage'),
                        url(r'^barcode/submit/$', views.barcode_submit, name='barcode submit'),
                        url(r'^barcode/upload/$', views.barcode_upload, name='barcode upload'),

@@ -288,6 +288,13 @@ def set_run_status(request, run_name, status):
         return HttpResponse(json.dumps({"response": "Failed, bad status: " + status}))
 
 
+@csrf_exempt
+def get_library_status(request, run_name, lane_number, bionimbus_id):
+    #TODO
+    pass
+
+
+
 @login_required
 def barcode_manage(request):
     barcodes = Barcode.objects.all()

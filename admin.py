@@ -15,6 +15,10 @@ class RunTypeAdmin(admin.ModelAdmin):
 
 class LaneAdmin(admin.ModelAdmin):
     model = Lane
+    list_display = ('number', 'config', 'get_run_name')
+
+    def get_run_name(self, obj):
+        return obj.config.run_name
 
 
 class LaneCountAdmin(admin.ModelAdmin):
@@ -23,6 +27,10 @@ class LaneCountAdmin(admin.ModelAdmin):
 
 class LibraryAdmin(admin.ModelAdmin):
     model = Library
+    list_display = ('bionimbus_id', 'submitter', 'barcode', 'release', 'lane', 'get_run_name')
+
+    def get_run_name(self, obj):
+        return obj.lane.config.run_name
 
 
 class ConfigAdmin(admin.ModelAdmin):
