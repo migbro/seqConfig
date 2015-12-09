@@ -5,8 +5,7 @@ $(document).ready(function(){
     $('.barcode-select').select2({
         minimumResultsForSearch: 10,
         placeholder: 'Select Barcode'
-    }).off('change').change(function(){
-        console.debug($(this));
+    }).change(function(){
         var barcodeSeq = $(this).find('option:selected').data('barcodeseq');
         var $barcodeSeqCol = $(this).parent().next().first();
         $barcodeSeqCol.text(barcodeSeq);
