@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 
-#from django.conf import settings
+from django.conf import settings
 import sys
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -266,6 +266,18 @@ def config_delete(request, config_id):
     if request.method == 'POST':
         Config.objects.get(pk=config_id).delete()
     return HttpResponseRedirect('/seq-config/config/manage/')
+
+
+@csrf_exempt
+def set_run_status(request, run_name, status):
+    config = Config.objects.filter(run_name=run_name)
+    if status in [int(i[0]) for i in Config.status_choices]: # valid status?
+        config.status = status
+        config.save()
+        return HttpResponse(json.dumps({"response": "Success!"}))
+    else:
+        return HttpResponse(json.dumps({"response": "Failed, bad status: " + status}))
+
 
 
 @login_required
