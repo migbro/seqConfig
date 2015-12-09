@@ -40,6 +40,9 @@ $(document).ready(function(){
                 $('#config_approve_form').submit();
             }
         }
+    }).tooltip({
+        title: 'Save Changes Before Approving',
+        trigger: 'hover'
     });
 
     $('#submit_delete').click(function(){
@@ -68,7 +71,6 @@ $(document).ready(function(){
                 $lanesSection.append($(data));
             });
         }
-
     }).change();
 
     $('#id_runtype').select2({

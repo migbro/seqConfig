@@ -2,9 +2,9 @@
 {% for lib_i, lib in libs %}
 <div class="row library-lane{% if not lib_i|add:'1'|divisibleby:2 %} even-library-lane{% endif %}" data-n="{{ lib_i|add:'1' }}">
     <div class="col-sm-2">
-        <input type="text" class="form-control" placeholder="Library {{ lib_i|add:'1' }}" name="bionimbus_id__lane_{{ lane_num }}__lib_{{ lib_i|add:'1' }}" value="{{ lib.bionimbus_id }}"/>
+        <input type="text" class="form-control bionimbus-id" placeholder="Library {{ lib_i|add:'1' }}" name="bionimbus_id__lane_{{ lane_num }}__lib_{{ lib_i|add:'1' }}" value="{{ lib.bionimbus_id }}"/>
     </div>
-    <div class="col-sm-2 library-lane-vertical-center">(Project)</div>
+    <div class="col-sm-2 library-lane-vertical-center project-name" style="overflow-x:auto"></div>
     <div class="col-sm-2">
         <input type="text" class="form-control" placeholder="Submitter" name="submitter__lane_{{ lane_num }}__lib_{{ lib_i|add:'1' }}" value="{{ lib.submitter }}"/>
     </div>
