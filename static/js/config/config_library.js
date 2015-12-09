@@ -19,6 +19,6 @@ $(document).ready(function(){
     /* for firing off ajax call to fill project name after bionimbus_id is entered
        required.  Debounce is available in jQuery
 
-    //$('input[name=suggest]').keyup($.debounce(onKeyUp, 300));
+    //$('input[name=suggest]').keyup($.debounce(onKeyUp, 300));*/
 
 });
