@@ -15,7 +15,7 @@ $(document).ready(function(){
         if(numLibsExist < numLibsRequest){ // Add libraries
             var start = parseInt(numLibsExist) + 1;
             var stop = numLibsRequest;
-            $.get('/seqConfig/ajax/config/library/' + start + '/' + stop + '/' + lane + '/', function(data){
+            $.get('/seq-config/ajax/config/library/' + start + '/' + stop + '/' + lane + '/', function(data){
                 $librarySection.append($(data));
                 $numLibsInput.data('libs-exist', numLibsRequest);
             });

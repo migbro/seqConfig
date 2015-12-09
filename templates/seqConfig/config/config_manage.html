@@ -10,7 +10,7 @@
     <section class="seq-config-section">
         <div class="row">
             <div class="col-sm-12">
-                <a href="/seqConfig/config/submit/">
+                <a href="/seq-config/config/submit/">
                     <button class="btn btn-primary btn-sm" style="margin-bottom:15px">
                         <span class="fa fa-plus"></span>&nbsp;&nbsp;Add Config
                     </button>
@@ -41,7 +41,7 @@
                         <td>{{ config.run_name }}</td>
                         <td>{{ config.created_by.username }} ({% if config.approved_by.username %}{{ config.approved_by.username }}{% else %}Not Approved{% endif %})</td>
                         <td>
-                            <a href="/seqConfig/config/edit/{{ config.pk }}" class="seq-config-icon-link" title="Edit/Delete">
+                            <a href="/seq-config/config/edit/{{ config.pk }}" class="seq-config-icon-link" title="Edit/Delete">
                                 <span class="fa fa-2x fa-pencil"></span>&nbsp;&nbsp;
                             </a>
                             <span class="fa fa-2x fa-caret-down seq-config-icon seq-config-pointer caret-down" data-state="down"></span>&nbsp;&nbsp;

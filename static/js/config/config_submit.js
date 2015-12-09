@@ -7,7 +7,7 @@ $(document).ready(function(){
     }).change(function(){
         var numLanes = $(this).val();
         var $lanesSection = $('#lanes-section');
-        $.get('/seqConfig/ajax/config/lane/' + numLanes + '/', function(data){
+        $.get('/seq-config/ajax/config/lane/' + numLanes + '/', function(data){
             $lanesSection.empty();
             $lanesSection.append($(data));
         });

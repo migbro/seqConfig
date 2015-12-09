@@ -28,7 +28,7 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
-                return HttpResponseRedirect('/seqConfig/config/manage/')
+                return HttpResponseRedirect('/seq-config/config/manage/')
             else:
                 # user is inactive
                 return HttpResponse('Sorry, your account is disabled.')
@@ -44,7 +44,7 @@ def user_login(request):
 
 def user_logout(request):
     logout(request)
-    return HttpResponseRedirect('/seqConfig/login/')
+    return HttpResponseRedirect('/seq-config/login/')
 
 
 # Create your views here.
@@ -97,7 +97,7 @@ def config_submit(request):
                         cluster_station_concentration=cluster_station_concentration
                     )
                     new_library.save()
-        return HttpResponseRedirect('/seqConfig/config/manage/')
+        return HttpResponseRedirect('/seq-config/config/manage/')
     else:
         config_form = ConfigForm(instance=Config())
         lane_counts = LaneCount.objects.all()
@@ -224,7 +224,7 @@ def config_edit(request, config_id):
                         cluster_station_concentration=cluster_station_concentration
                     )
                     new_library.save()
-        return HttpResponseRedirect('/seqConfig/config/manage/')
+        return HttpResponseRedirect('/seq-config/config/manage/')
     else:
         config_form = ConfigForm(instance=config)
 
@@ -258,14 +258,14 @@ def config_approve(request, config_id):
         config.approved_by = request.user
         config.approved_date = datetime.now()
     config.save()
-    return HttpResponseRedirect('/seqConfig/config/manage/')
+    return HttpResponseRedirect('/seq-config/config/manage/')
 
 
 @login_required
 def config_delete(request, config_id):
     if request.method == 'POST':
         Config.objects.get(pk=config_id).delete()
-    return HttpResponseRedirect('/seqConfig/config/manage/')
+    return HttpResponseRedirect('/seq-config/config/manage/')
 
 
 @login_required
@@ -339,7 +339,7 @@ def barcode_edit(request, barcode_id):
         updated_barcode_form = BarcodeForm(request.POST, instance=barcode)
         if updated_barcode_form.is_valid():
             updated_barcode_form.save()
-            return HttpResponseRedirect('/seqConfig/barcode/manage/')
+            return HttpResponseRedirect('/seq-config/barcode/manage/')
     else:
         barcode_form = BarcodeForm(instance=barcode)
         context = {'barcode_form': barcode_form,
@@ -352,7 +352,7 @@ def barcode_edit(request, barcode_id):
 def barcode_delete(request, barcode_id):
     if request.method == 'POST':
         Barcode.objects.get(pk=barcode_id).delete()
-    return HttpResponseRedirect('/seqConfig/barcode/manage/')
+    return HttpResponseRedirect('/seq-config/barcode/manage/')
 
 
 def ajax_config_lane(request, num_lanes):

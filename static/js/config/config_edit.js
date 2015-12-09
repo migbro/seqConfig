@@ -58,12 +58,12 @@ $(document).ready(function(){
         var numLanes = $(this).val();
         if($lanesSection.data('gotlanes') == 'no'){
             var configId = $('#config_id').val();
-            $.get('/seqConfig/ajax/config/lane_edit/' + numLanes + '/' + configId + '/', function(data){
+            $.get('/seq-config/ajax/config/lane_edit/' + numLanes + '/' + configId + '/', function(data){
                 $lanesSection.empty();
                 $lanesSection.append($(data));
             });
         }else{
-            $.get('/seqConfig/ajax/config/lane/' + numLanes + '/', function(data){
+            $.get('/seq-config/ajax/config/lane/' + numLanes + '/', function(data){
                 $lanesSection.empty();
                 $lanesSection.append($(data));
             });

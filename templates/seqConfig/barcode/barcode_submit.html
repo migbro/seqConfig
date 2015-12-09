@@ -13,7 +13,7 @@
         </div>
     </section>
     <section class="seq-config-section">
-        <form id="single" action="/seqConfig/barcode/submit/" method="post">
+        <form id="single" action="/seq-config/barcode/submit/" method="post">
             {% csrf_token %}
             {% for field in barcode_form %}
             <div class="row" style="margin-bottom:15px">
@@ -36,7 +36,7 @@
                 </div>
             </section>
         </form>
-        <form id="multi" action="/seqConfig/barcode/upload/" method="post" enctype="multipart/form-data">
+        <form id="multi" action="/seq-config/barcode/upload/" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <section class="seq-config-section">
                 <div class="row seq-text-center">

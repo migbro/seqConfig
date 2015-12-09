@@ -8,10 +8,10 @@
         </div>
     </section>
     <section class="bc-config-section">
-        <form action="/seqConfig/barcode/delete/{{ barcode_id }}/" method="post" id="barcode_delete_form">
+        <form action="/seq-config/barcode/delete/{{ barcode_id }}/" method="post" id="barcode_delete_form">
             {% csrf_token %}
         </form>
-        <form action="/seqConfig/barcode/edit/{{ barcode_id }}/" method="post" id="barcode_edit_form">
+        <form action="/seq-config/barcode/edit/{{ barcode_id }}/" method="post" id="barcode_edit_form">
             {% csrf_token %}
             {% for field in barcode_form %}
             <div class="row" style="margin-bottom:15px">

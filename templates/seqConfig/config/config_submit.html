@@ -8,7 +8,7 @@
         </div>
     </section>
     <section class="seq-config-section">
-        <form action="/seqConfig/config/submit/" method="post">
+        <form action="/seq-config/config/submit/" method="post">
             {% csrf_token %}
             {% for field in config_form %}
             <div class="row" style="margin-bottom:15px">

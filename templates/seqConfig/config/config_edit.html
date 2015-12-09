@@ -17,13 +17,13 @@
         </div>
     </section>
     <section class="seq-config-section">
-        <form action="/seqConfig/config/delete/{{ config_id }}/" method="post" id="config_delete_form">
+        <form action="/seq-config/config/delete/{{ config_id }}/" method="post" id="config_delete_form">
             {% csrf_token %}
         </form>
-        <form action="/seqConfig/config/approve/{{ config_id }}/" method="post" id="config_approve_form">
+        <form action="/seq-config/config/approve/{{ config_id }}/" method="post" id="config_approve_form">
             {% csrf_token %}
         </form>
-        <form action="/seqConfig/config/edit/{{ config_id }}/" method="post" id="config_edit_form">
+        <form action="/seq-config/config/edit/{{ config_id }}/" method="post" id="config_edit_form">
             {% csrf_token %}
             {% for field in config_form %}
             <div class="row" style="margin-bottom:15px">
