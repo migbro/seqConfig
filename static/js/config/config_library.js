@@ -15,9 +15,11 @@ $(document).ready(function(){
         var $this = $(this);
         $.getJSON('/seq-config/ajax/bionimbus/project_by_bionimbus_bid/' + $(this).val().trim() + '/', function(dataJSON){
             $this.parent().next('.project-name').first()
-                .removeClass('animated flipInX')
                 .addClass('animated flipInX')
-                .text(dataJSON.project_name);
+                .text(dataJSON.project_name)
+                .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+                    $(this).removeClass('animated flipInX');
+                });
         });
     }).change();
 });
