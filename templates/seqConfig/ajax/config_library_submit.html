@@ -2,7 +2,8 @@
 {% for lib in libs %}
 <div class="row library-lane{% if not lib|divisibleby:2 %} even-library-lane{% endif %}" data-n="{{ lib }}">
     <div class="col-sm-2">
-        <input type="text" class="form-control bionimbus-id" placeholder="Library {{ lib }}" name="bionimbus_id__lane_{{ lane }}__lib_{{ lib }}"/>
+        <input type="text" class="form-control bionimbus-id" placeholder="Library {{ lib }}"
+               name="bionimbus_id__lane_{{ lane }}__lib_{{ lib }}"/>
     </div>
     <div class="col-sm-2 library-lane-vertical-center">(Project)</div>
     <div class="col-sm-2">
