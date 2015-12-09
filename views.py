@@ -1,4 +1,5 @@
 import json
+import re
 from datetime import datetime
 
 from django.conf import settings
@@ -414,12 +415,14 @@ def ajax_config_library_edit(request, lane_id):
 
 
 def ajax_bionimbus_project_by_id(request, bionimbus_id):
+    if re.match(r'^\d+-\d+$', bionimbus_id) is None:
+        return HttpResponse(json.dumps({'project_name': 'Invalid Format'}))
     try:
         eng = create_engine(settings.BIONIMBUS_PSQL_DB)
         con = eng.connect()
     except OperationalError, oe:
         print >>sys.stderr, oe
-        return HttpResponse(json.dumps({bionimbus_id: "No DB conn"}))
+        return HttpResponse(json.dumps({'project_name': 'No DB conn'}))
 
     query = '''select t_project.f_name from t_project, t_experiment_unit where
     t_experiment_unit.f_bionimbus_id = '{}' and
@@ -430,4 +433,4 @@ def ajax_bionimbus_project_by_id(request, bionimbus_id):
         project_name = rs.fetchone()[0]
     except TypeError, te:
         project_name = 'Not Found'
-    return HttpResponse(json.dumps({bionimbus_id: project_name}))
+    return HttpResponse(json.dumps({'project_name': project_name}))
