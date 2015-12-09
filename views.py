@@ -291,9 +291,10 @@ def set_run_status(request, run_name, status):
 
 @csrf_exempt
 def get_library_status(request, run_name, lane_number, bionimbus_id):
-    #TODO
-    pass
-
+    config = Config.objects.get(run_name=run_name)
+    lane = Lane.objects.get(number=lane_number, config=config)
+    library = Library.objects.get(lane=lane, bionimbus_id=bionimbus_id)
+    return HttpResponse(json.dumps({bionimbus_id: library.release}))
 
 
 @login_required
