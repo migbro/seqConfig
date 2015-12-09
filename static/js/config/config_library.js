@@ -10,12 +10,12 @@ $(document).ready(function(){
         var barcodeSeq = $(this).find('option:selected').data('barcodeseq');
         var $barcodeSeqCol = $(this).parent().next().first();
         $barcodeSeqCol.text(barcodeSeq);
-    });
+    }).change();
 
     $('.bionimbus-id').off('change').change(function(){
         var $this = $(this);
         $.getJSON('/seq-config/ajax/bionimbus/project_by_bionimbus_bid/' + $(this).val().trim() + '/', function(dataJSON){
             $this.parent().next('.project-name').first().text(dataJSON.project_name);
         });
-    });
+    }).change();
 });
