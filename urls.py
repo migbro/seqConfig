@@ -19,6 +19,10 @@ urlpatterns = patterns('',
 
                        url(r'^run/demultiplex_file/post/(?P<run_name>\S+)/$',
                            views.post_demultiplex_file, name='post_demultiplex'),
+                       url(r'^run/get_runs_by_status/(?P<status>\d+)/$', views.get_runs_by_status,
+                           name='get_runs_by_status'),
+                       url(r'^run/set_run_status/(?P<run_name>\S+)/(?P<status>\d+)/$',
+                           views.set_run_status, name='set_run_status'),
 
                        url(r'^barcode/manage/$', views.barcode_manage, name='barcode manage'),
                        url(r'^barcode/submit/$', views.barcode_submit, name='barcode submit'),

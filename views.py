@@ -269,15 +269,23 @@ def config_delete(request, config_id):
 
 
 @csrf_exempt
+def get_runs_by_status(request, status):
+    configs = Config.objects.filter(status=status)
+    return_json = dict()
+    for i, c in enumerate(configs):
+        return_json[i] = c.run_name
+    return HttpResponse(json.dumps(return_json))
+
+
+@csrf_exempt
 def set_run_status(request, run_name, status):
-    config = Config.objects.filter(run_name=run_name)
-    if status in [int(i[0]) for i in Config.status_choices]: # valid status?
+    config = Config.objects.get(run_name=run_name)
+    if int(status) in [int(i[0]) for i in Config.status_choices]: # valid status?
         config.status = status
         config.save()
         return HttpResponse(json.dumps({"response": "Success!"}))
     else:
         return HttpResponse(json.dumps({"response": "Failed, bad status: " + status}))
-
 
 
 @login_required
