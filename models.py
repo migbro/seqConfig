@@ -94,6 +94,16 @@ class Config(models.Model):
         COMPLETED = 5
         RELEASED = 6
 
+    status_choices_lookup = {
+        RunStatus.CREATED: "Created",
+        RunStatus.APPROVED: "Approved",
+        RunStatus.SEQUENCING: "Sequencing",
+        RunStatus.PROCESSING: "Processing",
+        RunStatus.PROCESSED: "Processed",
+        RunStatus.COMPLETED: "Completed",
+        RunStatus.RELEASED: "Released"
+    }
+
     status_choices = (
         (RunStatus.CREATED, 'Created'),
         (RunStatus.APPROVED, 'Approved'),
@@ -103,6 +113,7 @@ class Config(models.Model):
         (RunStatus.COMPLETED, 'Completed'),
         (RunStatus.RELEASED, 'Released'),
     )
+
     status = models.SmallIntegerField(choices=status_choices,
                                       verbose_name='Run Status',
                                       default=RunStatus.CREATED)

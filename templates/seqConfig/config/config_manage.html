@@ -26,7 +26,8 @@
                         <th class="col-xs-2">Creation Date</th>
                         <th class="col-xs-1">Type</th>
                         <th class="col-xs-1">Cycles</th>
-                        <th class="col-xs-3">Run Folder ID</th>
+                        <th class="col-xs-2">Run Folder ID</th>
+                        <th class="col-xs-1">Status</th>
                         <th class="col-xs-2">Created By (Approved By)</th>
                         <th class="col-xs-2"></th>
                     </tr>
@@ -39,6 +40,7 @@
                         <td>{{ config.runtype.name }}</td>
                         <td>{{ config.read1_cycles }}, {{ config.barcode_cycles }}, {{ config.read2_cycles }}</td>
                         <td>{{ config.run_name }}</td>
+                        <td>{{ config.get_status_display }}</td>
                         <td>{{ config.created_by.username }} ({% if config.approved_by.username %}{{ config.approved_by.username }}{% else %}Not Approved{% endif %})</td>
                         <td>
                             <a href="/seq-config/config/edit/{{ config.pk }}" class="seq-config-icon-link" title="Edit/Delete">
