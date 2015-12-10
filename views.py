@@ -420,7 +420,6 @@ def ajax_bionimbus_project_by_id(request, bionimbus_id):
         return HttpResponse(json.dumps({'project_name': ''}))
     if re.match(r'^\d+-\d+$', bionimbus_id) is None:
         return HttpResponse(json.dumps({'project_name': 'Invalid Format'}))
-    return HttpResponse(json.dumps({'project_name': 'name'}))
     try:
         eng = create_engine(settings.BIONIMBUS_PSQL_DB)
         con = eng.connect()
