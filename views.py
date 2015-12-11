@@ -255,7 +255,7 @@ def config_edit(request, config_id):
         num_lanes = config.lane_set.count()
         lane_counts = LaneCount.objects.all()
         if config.status == Config.RunStatus.PROCESSED:
-            summary_html = summary_parser.htmlify_summary(config.summary)
+            summary_html = summary_parser.add_checkboxes_to_summary(config.summary)
         else:
             summary_html = config.summary
 
