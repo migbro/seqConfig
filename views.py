@@ -256,6 +256,11 @@ def config_edit(request, config_id):
         lane_counts = LaneCount.objects.all()
         if config.status == Config.RunStatus.PROCESSED:
             summary_html = summary_parser.add_checkboxes_to_summary(config.summary)
+        elif config.status >= Config.RunStatus.COMPLETED:
+            summary_html = summary_parser.add_status_to_summary(
+                Library.objects.filter(lane__config__pk=config_id),
+                config.summary
+            )
         else:
             summary_html = config.summary
 
@@ -267,7 +272,8 @@ def config_edit(request, config_id):
             'lane_counts': lane_counts,
             'display_results': True if config.status >= Config.RunStatus.PROCESSED else False,
             'allow_release': True if config.status == Config.RunStatus.PROCESSED else False,
-            'run_summary': summary_html
+            'run_summary': summary_html,
+            'displayable_status': config.get_status_display()
         }
         context.update(csrf(request))
         return render(request, 'seqConfig/config/config_edit.html', context)

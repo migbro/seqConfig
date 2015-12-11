@@ -6,9 +6,10 @@
         <div class="row seq-text-center">
             <h1 class="seq-config-header">Edit SeqConfig</h1>
             <div class="col-sm-10 col-sm-offset-1">
-                <button type="button" class="btn btn-primary approve_btn" style="float:right;margin-right:12px"{% if config_approved %} data-clicked="0"{% endif %}>
+                <span style="float:left;font-weight:bold">Status: {{ displayable_status }}</span>
+                <button type="button" class="btn btn-primary approve_btn" style="float:right;margin-right:12px"{% if config_approved %} data-clicked="0"{% endif %}{% if display_results %} disabled="disabled"{% endif %}>
                     {% if config_approved %}
-                    <span class="fa fa-undo"></span>&nbsp;&nbsp;Un-approve SeqConfig
+                    <span class="fa fa-undo"></span>&nbsp;&nbsp;Unapprove SeqConfig
                     {% else %}
                     <span class="fa fa-check-circle"></span>&nbsp;&nbsp;Approve SeqConfig
                     {% endif %}
@@ -57,11 +58,11 @@
     <section class="seq-config-section">
         <div class="row">
             <div class="col-sm-10 col-sm-offset-1">
-                <button type="button" id="submit_edit" class="btn btn-primary" style="float:right">
+                <button type="button" id="submit_edit" class="btn btn-primary" style="float:right"{% if config_approved %} disabled="disabled"{% endif %}>
                     <span class="fa fa-wrench"></span>&nbsp;&nbsp;
                     Update
                 </button>
-                <button type="button" class="btn btn-primary approve_btn" style="float:right;margin-right:12px"{% if config_approved %} data-clicked="0"{% endif %}>
+                <button type="button" class="btn btn-primary approve_btn" style="float:right;margin-right:12px"{% if config_approved %} data-clicked="0"{% endif %}{% if display_results %} disabled="disabled"{% endif %}>
                     {% if config_approved %}
                     <span class="fa fa-undo"></span>&nbsp;&nbsp;Unapprove SeqConfig
                     {% else %}
@@ -78,7 +79,7 @@
     {% if display_results %}
     <section class="seq-config-section" id="run_summary_section">
         <div class="row seq-text-center">
-            <h1 class="seq-config-header">Results</h1>
+            <h1 class="seq-config-header">Results </h1>
         </div>
         <div class="row">
             {% if allow_release %}
