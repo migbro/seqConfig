@@ -9,9 +9,8 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
-                <li><a href="#"><span class="fa fa-globe"></span>&nbsp;&nbsp;Bionimbus Web</a></li>
-                <li><a href="/seq-config/barcode/manage/"><span class="fa fa-barcode"></span>&nbsp;&nbsp;Manage and View
-                    Barcodes</a></li>
+{#                <li><a href="#"><span class="fa fa-globe"></span>&nbsp;&nbsp;Bionimbus Web</a></li>#}
+                <li><a href="/seq-config/barcode/manage/"><span class="fa fa-barcode"></span>&nbsp;&nbsp;Manage Barcodes</a></li>
                 <li class="divider-vertical"><a href="#">Hello, {{ user.username }}</a></li>
                 <li><a href="/seq-config/logout/">Log Out&nbsp;&nbsp;<span class="fa fa-sign-out"></span></a></li>
                 {% else %}

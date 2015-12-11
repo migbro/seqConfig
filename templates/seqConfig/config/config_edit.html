@@ -75,21 +75,27 @@
             </div>
         </div>
     </section>
+    {% if display_results %}
     <section class="seq-config-section" id="run_summary_section">
         <div class="row seq-text-center">
             <h1 class="seq-config-header">Results</h1>
         </div>
         <div class="row">
-            {% if run_status == 4 %}
-                <button type="button" id="release_data" class="btn btn-primary">
+            {% if allow_release %}
+                <button type="button" class="btn btn-primary release_btn">
                     <span class="fa fa-check-circle"></span>&nbsp;&nbsp;Release Selected Data
                 </button>
             {% endif %}
         </div>
-        <div class="container run_summary_html" id="run_summary">
-            {{ run_summary|safe }}
-        </div>
+        <form action="/seq-config/config/release/" method="post" id="config_release_form">
+            {% csrf_token %}
+            <input type="hidden" name="config_id" value="{{ config_id }}"/>
+            <div class="row run_summary_html" id="run_summary">
+                {{ run_summary|safe }}
+            </div>
+        </form>
     </section>
+    {% endif %}
 </div>
 <input type="hidden" id="config_id" value="{{ config_id }}"/>
 <script src="{% static 'js/config/config_edit.js' %}"></script>

@@ -12,7 +12,7 @@ def htmlify_summary(summary_html=None):
         m = pattern.match(line)  # match library lines for adding checkboxes
         if m:
             old = '<tr><td>'
-            new = old + '<input type="checkbox" id="{}_{}" checked>&nbsp;'.format(m.group(1), m.group(2))
+            new = old + '<input type="checkbox" name="{}" checked>&nbsp;'.format(m.group(2))
             line = string.replace(line, old, new, 1)
         updated_html += line
     return updated_html

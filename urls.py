@@ -14,6 +14,7 @@ urlpatterns = patterns('',
                        url(r'^config/submit/$', views.config_submit, name='config submit'),
                        url(r'^config/edit/(?P<config_id>\d+)/$', views.config_edit, name='config edit'),
                        url(r'^config/approve/(?P<config_id>\d+)/$', views.config_approve, name='config approve'),
+                       url(r'^config/release/$', views.config_release, name='config release'),
                        url(r'^config/delete/(?P<config_id>\d+)/$', views.config_delete, name='config delete'),
                        url(r'^config/get/(?P<run_name>\S+)/$', views.config_get, name='config_get'),
 

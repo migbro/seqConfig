@@ -1,6 +1,7 @@
 import json
 import re
 from datetime import datetime
+from copy import copy
 
 from django.conf import settings
 import sys
@@ -34,15 +35,17 @@ def user_login(request):
                 return HttpResponseRedirect('/seq-config/config/manage/')
             else:
                 # user is inactive
-                return HttpResponse('Sorry, your account is disabled.')
+                messages.error(request, 'Sorry, your account is disabled')
+                context = {}
+                context.update(csrf(request))
+                return render(request, 'seqConfig/auth/login.html')
         else:
             # Bad login details
             print 'Invalid login details: {0}, {1}'.format(username, password)
-            messages.error(request, 'Invalid login details.')
+            messages.error(request, 'Invalid login details')
             context = {}
             context.update(csrf(request))
             return render(request, 'seqConfig/auth/login.html')
-            return HttpResponse('Invalid login details provided.')
     else:
         context = {}
         context.update(csrf(request))
@@ -262,7 +265,8 @@ def config_edit(request, config_id):
             'config_approved': True if config.approved_by is not None else False,
             'num_lanes': int(num_lanes),
             'lane_counts': lane_counts,
-            'run_status': config.status,
+            'display_results': True if config.status >= Config.RunStatus.PROCESSED else False,
+            'allow_release': True if config.status == Config.RunStatus.PROCESSED else False,
             'run_summary': summary_html
         }
         context.update(csrf(request))
@@ -293,6 +297,38 @@ def config_approve(request, config_id):
         messages.warning(request, 'Something went wrong', 'warning')
     return HttpResponseRedirect('/seq-config/config/manage/')
 
+@login_required
+def config_release(request):
+    if request.method == 'POST':
+        fields = copy(request.POST)
+        config_id = fields['config_id']
+        del fields['config_id']
+        del fields['csrfmiddlewaretoken']
+        released_bids = list(fields)
+        try:
+            config = Config.objects.get(pk=config_id)
+            libraries = Library.objects.filter(lane__config__pk=config_id)
+            num_released = 0
+            with transaction.atomic():
+                for library in libraries:
+                    if library.bionimbus_id in released_bids:
+                        library.release = Library.ReleaseStatus.YES
+                        num_released += 1
+                    else:
+                        library.release = Library.ReleaseStatus.NO
+                    library.save()
+                config.status = Config.RunStatus.COMPLETED
+                config.save()
+            messages.info(request, 'Released {}/{} libraries for configuration {}'.format(
+                num_released,
+                len(libraries),
+                config.run_name
+            ))
+        except Exception, e:
+            messages.warning(request, 'Something went wrong, no libraries were released', 'warning')
+    else:
+        messages.warning(request, 'Request was invalid, no libraries were released', 'warning')
+    return HttpResponseRedirect('/seq-config/config/manage/')
 
 @login_required
 def config_delete(request, config_id):

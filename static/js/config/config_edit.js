@@ -45,6 +45,10 @@ $(document).ready(function(){
         trigger: 'hover'
     });
 
+    $('.release_btn').click(function(){
+        $('#config_release_form').submit();
+    });
+
     $('#submit_delete').click(function(){
         if($(this).data('clicked') == '0'){
             $(this).text('Click again to delete');
