@@ -6,10 +6,12 @@ from django.conf import settings
 import sys
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.core.context_processors import csrf
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.db import transaction
 from sqlalchemy.exc import OperationalError
 from sqlalchemy import create_engine
 from sqlalchemy.sql import text
@@ -36,6 +38,10 @@ def user_login(request):
         else:
             # Bad login details
             print 'Invalid login details: {0}, {1}'.format(username, password)
+            messages.error(request, 'Invalid login details.')
+            context = {}
+            context.update(csrf(request))
+            return render(request, 'seqConfig/auth/login.html')
             return HttpResponse('Invalid login details provided.')
     else:
         context = {}
@@ -61,43 +67,50 @@ def config_submit(request):
     if request.method == 'POST':
         config_form = ConfigForm(request.POST, instance=Config())
         if config_form.is_valid():
-            new_config = config_form.save(commit=False)
-            new_config.created_by = request.user
-            new_config.save()
+            try:
+                with transaction.atomic():
+                    new_config = config_form.save(commit=False)
+                    new_config.created_by = request.user
+                    new_config.save()
 
-            num_lanes = request.POST.get('lane_count')
-            for lane in range(1, int(num_lanes) + 1):
-                new_lane = Lane(
-                    number=lane,
-                    config=new_config
-                )
-                new_lane.save()
+                    num_lanes = request.POST.get('lane_count')
+                    for lane in range(1, int(num_lanes) + 1):
+                        new_lane = Lane(
+                            number=lane,
+                            config=new_config
+                        )
+                        new_lane.save()
 
-                num_libraries = request.POST.get('num_libraries__lane_' + str(lane))
-                for library in range(1, int(num_libraries) + 1):
-                    library_tag = '__lane_{}__lib_{}'.format(lane, library)
+                        num_libraries = request.POST.get('num_libraries__lane_' + str(lane))
+                        for library in range(1, int(num_libraries) + 1):
+                            library_tag = '__lane_{}__lib_{}'.format(lane, library)
 
-                    # If no Barcode is provided, make NULL in database
-                    barcode_id = request.POST.get('barcode' + library_tag)
-                    if barcode_id != '':
-                        barcode = Barcode.objects.get(pk=barcode_id)
-                    else:
-                        barcode = None
+                            # If no Barcode is provided, make NULL in database
+                            barcode_id = request.POST.get('barcode' + library_tag)
+                            if barcode_id != '':
+                                barcode = Barcode.objects.get(pk=barcode_id)
+                            else:
+                                barcode = None
 
-                    # If no cluster_station_concentration is provided, store 0.0 in database
-                    cluster_station_concentration = request.POST.get('cluster_station_concentration' + library_tag)
-                    if cluster_station_concentration == '':
-                        cluster_station_concentration = 0.0
+                            # If no cluster_station_concentration is provided, store 0.0 in database
+                            cluster_station_concentration = request.POST.get('cluster_station_concentration' + library_tag)
+                            if cluster_station_concentration == '':
+                                cluster_station_concentration = 0.0
 
-                    # Create the new library model, hooked up to the newly created lane_model
-                    new_library = Library(
-                        lane=new_lane,
-                        bionimbus_id=request.POST.get('bionimbus_id' + library_tag),
-                        submitter=request.POST.get('submitter' + library_tag),
-                        barcode=barcode,
-                        cluster_station_concentration=cluster_station_concentration
-                    )
-                    new_library.save()
+                            # Create the new library model, hooked up to the newly created lane_model
+                            new_library = Library(
+                                lane=new_lane,
+                                bionimbus_id=request.POST.get('bionimbus_id' + library_tag),
+                                submitter=request.POST.get('submitter' + library_tag),
+                                barcode=barcode,
+                                cluster_station_concentration=cluster_station_concentration
+                            )
+                            new_library.save()
+                    messages.info(request, 'Successfully added configuration for run {}'. format(new_config.run_name))
+            except Exception, e:
+                messages.warning(request, 'Adding configuration failed', 'warning')
+        else:
+            messages.warning(request, 'Configuration was not properly filled out', 'thumbs-o-down')
         return HttpResponseRedirect('/seq-config/config/manage/')
     else:
         config_form = ConfigForm(instance=Config())
@@ -190,41 +203,48 @@ def config_edit(request, config_id):
     if request.method == 'POST':
         updated_config_form = ConfigForm(request.POST, instance=config)
         if updated_config_form.is_valid():
-            updated_config = updated_config_form.save()
-            Library.objects.filter(lane__config=updated_config).delete()
-            updated_config.lane_set.all().delete()
-            num_lanes = request.POST.get('lane_count')
-            for lane in range(1, int(num_lanes) + 1):
-                new_lane = Lane(
-                    number=lane,
-                    config=updated_config
-                )
-                new_lane.save()
+            try:
+                with transaction.atomic():
+                    updated_config = updated_config_form.save()
+                    Library.objects.filter(lane__config=updated_config).delete()
+                    updated_config.lane_set.all().delete()
+                    num_lanes = request.POST.get('lane_count')
+                    for lane in range(1, int(num_lanes) + 1):
+                        new_lane = Lane(
+                            number=lane,
+                            config=updated_config
+                        )
+                        new_lane.save()
 
-                num_libraries = request.POST.get('num_libraries__lane_' + str(lane))
-                for library in range(1, int(num_libraries) + 1):
-                    library_tag = '__lane_{}__lib_{}'.format(lane, library)
+                        num_libraries = request.POST.get('num_libraries__lane_' + str(lane))
+                        for library in range(1, int(num_libraries) + 1):
+                            library_tag = '__lane_{}__lib_{}'.format(lane, library)
 
-                    # If no Barcode is provided, make NULL in database
-                    barcode_id = request.POST.get('barcode' + library_tag)
-                    if barcode_id != '':
-                        barcode = Barcode.objects.get(pk=barcode_id)
-                    else:
-                        barcode = None
+                            # If no Barcode is provided, make NULL in database
+                            barcode_id = request.POST.get('barcode' + library_tag)
+                            if barcode_id != '':
+                                barcode = Barcode.objects.get(pk=barcode_id)
+                            else:
+                                barcode = None
 
-                    # If no cluster_station_concentration is provided, store 0.0 in database
-                    cluster_station_concentration = request.POST.get('cluster_station_concentration' + library_tag)
-                    if cluster_station_concentration == '':
-                        cluster_station_concentration = 0.0
+                            # If no cluster_station_concentration is provided, store 0.0 in database
+                            cluster_station_concentration = request.POST.get('cluster_station_concentration' + library_tag)
+                            if cluster_station_concentration == '':
+                                cluster_station_concentration = 0.0
 
-                    new_library = Library(
-                        lane=new_lane,
-                        bionimbus_id=request.POST.get('bionimbus_id' + library_tag),
-                        submitter=request.POST.get('submitter' + library_tag),
-                        barcode=barcode,
-                        cluster_station_concentration=cluster_station_concentration
-                    )
-                    new_library.save()
+                            new_library = Library(
+                                lane=new_lane,
+                                bionimbus_id=request.POST.get('bionimbus_id' + library_tag),
+                                submitter=request.POST.get('submitter' + library_tag),
+                                barcode=barcode,
+                                cluster_station_concentration=cluster_station_concentration
+                            )
+                            new_library.save()
+                    messages.info(request, 'Successfully edited configuration for run {}'.format(updated_config.run_name))
+            except Exception, e:
+                messages.warning(request, 'Editing configuration failed', 'warning')
+        else:
+            messages.warning(request, 'Configuration was not properly edited', 'thumbs-o-down')
         return HttpResponseRedirect('/seq-config/config/manage/')
     else:
         config_form = ConfigForm(instance=config)
@@ -251,21 +271,41 @@ def config_edit(request, config_id):
 
 @login_required
 def config_approve(request, config_id):
-    config = Config.objects.get(pk=config_id)
-    if config.approved_by is not None:
-        config.approved_by = None
-        config.approved_date = None
-    else:
-        config.approved_by = request.user
-        config.approved_date = datetime.now()
-    config.save()
+    try:
+        config = Config.objects.get(pk=config_id)
+        if config.approved_by is not None:
+            config.approved_by = None
+            config.approved_date = None
+            config.status = Config.RunStatus.CREATED
+            messages.info(request, 'Configuration for {} has been unapproved'.format(
+                config.run_name
+            ), 'undo')
+        else:
+            config.approved_by = request.user
+            config.approved_date = datetime.now()
+            config.status = Config.RunStatus.APPROVED
+            messages.info(request, 'Configuration for {} has been approved by {}'.format(
+                config.run_name,
+                config.approved_by.username
+            ), 'check-circle')
+        config.save()
+    except Exception, e:
+        messages.warning(request, 'Something went wrong', 'warning')
     return HttpResponseRedirect('/seq-config/config/manage/')
 
 
 @login_required
 def config_delete(request, config_id):
     if request.method == 'POST':
-        Config.objects.get(pk=config_id).delete()
+        try:
+            config = Config.objects.get(pk=config_id)
+            config_run_name = config.run_name
+            config.delete()
+            messages.info(request, 'Successfully deleted configuration for run {}'.format(
+                config_run_name
+            ), 'trash')
+        except Exception, e:
+            messages.warning(request, 'Configuration could not be deleted', 'warning')
     return HttpResponseRedirect('/seq-config/config/manage/')
 
 

@@ -9,13 +9,22 @@
             </div>
         </section>
         <section class="seq-config-section">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="row">
+                <div class="alert alert-danger animated bounce col-sm-8 col-sm-offset-2">
+                    <span class="fa fa-lock"></span>&nbsp;&nbsp;{{ message }}
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
             <form action="/seq-config/login/" method="post">
                     {% csrf_token %}
                 <div class="row seq-text-center" style="margin-bottom:15px">
                     <div class="col-sm-1 col-sm-offset-2">
                         <label for="username">Username</label>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-7">
                         <input type="text" id="username" name="username" class="form-control">
                     </div>
                 </div>
@@ -23,12 +32,12 @@
                     <div class="col-sm-1 col-sm-offset-2">
                         <label for="password">Password</label>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-7">
                         <input type="password" id="password" name="password" class="form-control">
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-7 col-sm-offset-2">
+                    <div class="col-sm-8 col-sm-offset-2">
                         <button type="submit" class="btn btn-primary" style="float:right">
                             Login&nbsp;&nbsp;<span class="fa fa-sign-in"></span>
                         </button>
