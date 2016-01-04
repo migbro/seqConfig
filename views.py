@@ -1,6 +1,5 @@
 import json
 import re
-from datetime import datetime
 from copy import copy
 
 from django.conf import settings
@@ -13,6 +12,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
+from django.utils import timezone
 from sqlalchemy.exc import OperationalError
 from sqlalchemy import create_engine
 from sqlalchemy.sql import text
@@ -292,7 +292,7 @@ def config_approve(request, config_id):
             ), 'undo')
         else:
             config.approved_by = request.user
-            config.approved_date = datetime.now()
+            config.approved_date = timezone.now()
             config.status = Config.RunStatus.APPROVED
             messages.info(request, 'Configuration for {} has been approved by {}'.format(
                 config.run_name,

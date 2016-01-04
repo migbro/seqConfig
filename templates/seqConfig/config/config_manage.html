@@ -50,7 +50,7 @@
                         <td>{{ config.runtype.name }}</td>
                         <td>{{ config.read1_cycles }}, {{ config.barcode_cycles }}, {{ config.read2_cycles }}</td>
                         <td>{{ config.run_name }}</td>
-                        <td>{{ config.get_status_display }}</td>
+                        <td>{{ config.get_status_display }}{% if config.status_change_date %}<br/><span style="font-size:x-small">({{ config.status_change_date }})</span>{% endif %}</td>
                         <td>{{ config.created_by.username }} ({% if config.approved_by.username %}{{ config.approved_by.username }}{% else %}Not Approved{% endif %})</td>
                         <td>
                             <a href="/seq-config/config/edit/{{ config.pk }}" class="seq-config-icon-link" title="Edit/Delete">

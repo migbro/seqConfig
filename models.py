@@ -2,6 +2,7 @@ import django.utils.timezone
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
 
 
 class Barcode(models.Model):
@@ -117,6 +118,16 @@ class Config(models.Model):
     status = models.SmallIntegerField(choices=status_choices,
                                       verbose_name='Run Status',
                                       default=RunStatus.CREATED)
+    previous_status = models.SmallIntegerField(choices=status_choices,
+                                      verbose_name='Run Status',
+                                      default=RunStatus.CREATED)
+    status_change_date = models.DateTimeField(verbose_name='Status Last Changed', null=True, default=None)
+
+    def save(self, *args, **kwargs):
+        if self.previous_status != self.status:
+            self.previous_status = self.status
+            self.status_change_date = timezone.now()
+        super(Config, self).save(*args, **kwargs)
 
     def __str__(self):
         return '{}'.format(self.pk)
