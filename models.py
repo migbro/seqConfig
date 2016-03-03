@@ -32,7 +32,7 @@ class Barcode(models.Model):
 
     @classmethod
     def load_into_db(cls, bc_mem):
-        media_path = cls.get_media_path()
+        media_path = settings.MEDIA_ROOT
         bc_fn = media_path + '/' + str(bc_mem)
         cls.create_file(bc_fn, bc_mem)
         fh = open(bc_fn, 'r')
