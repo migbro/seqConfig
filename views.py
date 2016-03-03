@@ -438,10 +438,16 @@ def barcode_status(request, new_barcodes, existing_barcodes):
 @login_required
 def barcode_upload(request):
     print str(request.FILES['barcode_file'])
-    (new_barcodes, existing_barcodes) = Barcode.load_into_db(request.FILES['barcode_file'])
-    context = barcode_status(request, new_barcodes, existing_barcodes)
-    return render(request, 'seqConfig/barcode/barcode_status.html', context)
+    try:
+        (new_barcodes, existing_barcodes) = Barcode.load_into_db(request.FILES['barcode_file'])
+        context = barcode_status(request, new_barcodes, existing_barcodes)
+        return render(request, 'seqConfig/barcode/barcode_status.html', context)
+    except:
+        media_path = settings.MEDIA_ROOT
+        if not settings.DEBUG:
+            media_path = settings.MEDIA_URL
 
+        HttpResponse('Failed.  Try checking settings, media path was ' + media_path)
 
 @login_required
 def barcode_edit(request, barcode_id):
