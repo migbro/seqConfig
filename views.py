@@ -447,7 +447,7 @@ def barcode_upload(request):
         if not settings.DEBUG:
             media_path = settings.MEDIA_URL
 
-        HttpResponse('Failed.  Try checking settings, media path was ' + media_path)
+        return HttpResponse('Failed.  Try checking settings, media path was ' + media_path)
 
 @login_required
 def barcode_edit(request, barcode_id):
