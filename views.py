@@ -522,6 +522,12 @@ def ajax_bionimbus_project_by_id(request, bionimbus_id):
     try:
         rs = con.execute(text(query.format(bionimbus_id)))
         project_name = rs.fetchone()[0]
+        return HttpResponse(json.dumps({'project_name': project_name}))
     except TypeError, te:
         project_name = 'Not Found'
-    return HttpResponse(json.dumps({'project_name': project_name}))
+        return HttpResponse(json.dumps({'project_name': project_name}))
+    except:
+        project_name = 'Cannot query server, skipping!'
+        return HttpResponse(json.dumps({'project_name': project_name}))
+
+
