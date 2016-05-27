@@ -504,6 +504,7 @@ def ajax_config_library_edit(request, lane_id):
 
 
 def ajax_bionimbus_project_by_id(request, bionimbus_id):
+    return HttpResponse(json.dumps({'project_name': 'NA'}))
     if bionimbus_id == '':
         return HttpResponse(json.dumps({'project_name': ''}))
     if re.match(r'^\d+-\d+$', bionimbus_id) is None:
