@@ -74,7 +74,7 @@ class Config(models.Model):
                                        blank=True, null=True)
     barcode_cycles = models.IntegerField(verbose_name='Config Barcode Cycles',
                                          blank=True, null=True)
-    run_name = models.CharField(max_length=64, verbose_name='Run Folder ID',
+    run_name = models.CharField(max_length=1024, verbose_name='Run Folder ID',
                                 blank=True, null=True)
     description = models.TextField(verbose_name='Config Description', null=True, blank=True)
     created_by = models.ForeignKey(User, verbose_name='Config User Created By',
